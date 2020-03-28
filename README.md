@@ -1,4 +1,4 @@
-# ProyectoADOO2020-2
+# Proyecto ADOO2020-2
 Proyecto para la materia de Análisis y Diseño Orientado a Objetos
 Maestra: Melara Abarca Reyna Elia
 Integrantes:
