@@ -9,3 +9,6 @@ Integrantes:
   - Ramirez Espinoza Luis Armando
   - Ramírez Olvera Guillermo
   - Sánchez Méndez Edmundo Josué
+Tecnologias implementadas:
+  - Python (usando Flask)
+  - React.js
