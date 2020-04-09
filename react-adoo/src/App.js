@@ -1,7 +1,5 @@
 import React, { Component } from 'react';
 import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
-import { Redirect } from 'react-router';
-import Posts from './components/Posts';
 import RegistroMercancia from './components/RegistroMercancia';
 
 import Section from 'react-bulma-components/lib/components/section';
@@ -25,7 +23,7 @@ class App extends Component {
                 Espero que este mensaje básico no interfiera con su experiencia :)
                 </p>
                 <Link to="/registromercancia">
-                  <Button renderAs="button" color="success" onclick="/posts">
+                  <Button renderAs="button" color="success">
                     Comenzar
                   </Button>
                 </Link>
@@ -34,7 +32,6 @@ class App extends Component {
           }}>
           </Route>
           <Route path="/registromercancia" component={RegistroMercancia}/>
-          <Route path="/posts" component={Posts} />
         </Router>
       </div>
     </Section>
