@@ -12,7 +12,7 @@ def SeleccionarRMercancias():
     ArregloC = []
     for x in DictioC:
         ArregloC.append({'id':x,'NombreCuenta':DictioC[x]})
-    return jsonify({'Cuentas':ArregloC})
+    return jsonify(ArregloC)
 
 @main.route('/ObtenerCuentaRegistradas')
 def TodoCuentasAlmacenada():
