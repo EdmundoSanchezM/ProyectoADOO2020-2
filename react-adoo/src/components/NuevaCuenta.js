@@ -5,57 +5,26 @@ import Content from 'react-bulma-components/lib/components/content';
 import Heading from 'react-bulma-components/lib/components/heading';
 import Box from 'react-bulma-components/lib/components/box';
 import Button from 'react-bulma-components/lib/components/button';
-import axios from 'axios';
 import RegistroMercancia from './RegistroMercancia';
-import NombreCuenta from './NuevaCuenta';
-class Cuentas extends Component {
 
-    state = ({
-        Datos: localStorage.getItem('Datos') ? JSON.parse(localStorage.getItem("Datos")) : [],
-        select: localStorage.getItem("select") ? localStorage.getItem("select") : '...'
-    })
-    componentDidMount() {
-        const { ValorCuenta } = this.props.location.state
-        const sel = { idCM: ValorCuenta }
-        var self = this;
-        axios.post('/selectregistromercancia', sel)
-            .then(function (response) {
-                self.setState({ Datos: response.data });
-                localStorage.setItem("Datos", JSON.stringify(response.data));
-            })
-            .catch(function (error) {
-            });
-        if (ValorCuenta === 0) {
-            this.setState({ select: 'Inventarios Perpetuos' });
-            localStorage.setItem("select", 'Inventarios Perpetuos');
-        } else {
-            this.setState({ select: 'Analítico o Pormenorizado' });
-            localStorage.setItem("select", 'Analítico o Pormenorizado');
-        }
-    }
+class NuevaCuenta extends Component {
     render() {
         return (
             <Router>
-                <Route exact path="/cuentas" render={() => {
+                <Route exact path="/nuevacuenta" render={() => {
                     return <div>
                         <Heading>
                             Cuentas en uso
                         </Heading>
                         <Heading subtitle size={6}>
-                            Metodo seleccionado: {this.state.select}
+                            Metodo seleccionado:
                         </Heading>
                         <Content>
                             <Columns>
                                 <Columns.Column size={4}>
                                 </Columns.Column>
                                 <Columns.Column size={4}>
-                                    {
-                                        this.state.Datos.map(Datos => {
-                                            return <div key={Datos.id} className="container" align="left">
-                                                <p>{Datos.NombreCuenta}</p>
-                                            </div>
-                                        })
-                                    }
+                                    
                                 </Columns.Column>
                                 <Columns.Column size={4}>
                                 </Columns.Column>
@@ -92,8 +61,7 @@ class Cuentas extends Component {
                     </div>
                 }}>
                 </Route>
-                <Route path="/registromercancia" component={RegistroMercancia} />
-                <Route path="/nuevacuenta" component={NombreCuenta} />
+                <Route path="/nuevacuenta" component={RegistroMercancia} />
             </Router>
         )
     }
@@ -101,4 +69,4 @@ class Cuentas extends Component {
 }
 
 
-export default Cuentas;
+export default NuevaCuenta;
