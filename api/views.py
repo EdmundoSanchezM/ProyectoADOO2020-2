@@ -14,13 +14,13 @@ def SeleccionarRMercancias():
         ArregloC.append({'id':x,'NombreCuenta':DictioC[x]})
     return jsonify(ArregloC)
 
-@main.route('/ObtenerCuentaRegistradas')
+@main.route('/ObtenerCuentasExistentes')
 def TodoCuentasAlmacenada():
     ObtenerC = CuentasExistentes().copy()
     ArregloC=[]
     for x in ObtenerC:
         ArregloC.append({'id':x,'NombreCuenta':ObtenerC[x]})
-    return jsonify({'Cuentas':ArregloC})
+    return jsonify(ArregloC)
 
 @main.route('/TodosCuentas/<Cuentas>')
 def abc(Cuentas):
