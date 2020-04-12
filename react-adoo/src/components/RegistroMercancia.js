@@ -13,7 +13,7 @@ export default class RegistroMercancia extends Component {
                 <div className="container has-text-centered">
                     <Heading>
                         Preferencias de Esquema Mayor
-                                    </Heading>
+                    </Heading>
                     <Content>
                         <p>Seleccione el sistema para el registro de mercancias</p>
                         <Columns variableGap={{ mobile: 1, tablet: 0, desktop: 3, widescreen: 8, fullhd: 2 }}>
