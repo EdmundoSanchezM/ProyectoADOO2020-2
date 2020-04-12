@@ -8,7 +8,7 @@ import Box from 'react-bulma-components/lib/components/box';
 import Button from 'react-bulma-components/lib/components/button';
 import Section from 'react-bulma-components/lib/components/section';
 import List from 'react-bulma-components/lib/components/list';
-import Dropdown from 'react-bulma-components/lib/components/dropdown';
+import { Input } from 'react-bulma-components/lib/components/form';
 import Select from 'react-select';
 class NuevaCuenta extends Component {
     state = ({
@@ -16,8 +16,8 @@ class NuevaCuenta extends Component {
         select: localStorage.getItem("select") ? localStorage.getItem("select") : '...',
         ServerCExist: [],
         CuentasNExistentes: [],
-        selected: ''
-
+        selected: '',
+        CuentaNE: ''
     })
     onChange = (selected) => {
         this.setState({ selected });
@@ -31,8 +31,14 @@ class NuevaCuenta extends Component {
             .catch(function (error) {
             });
     }
-
+    onChange = (evt) => {
+        const value = evt.target.type === 'checkbox' ? evt.target.checked : evt.target.value;
+        this.setState({
+            [evt.target.name]: value,
+        });
+    }
     render() {
+        const { CuentaNE } = this.state;
         return (<Section>
             <div className="container has-text-centered">
                 <Heading>
@@ -67,11 +73,17 @@ class NuevaCuenta extends Component {
                             name="colors"
                             className="basic-multi-select"
                             classNamePrefix="select"
-                            placeholder={'Enter Name'}
+                            placeholder={'Seleccionar cuentas'}
                             getOptionLabel={option => option.NombreCuenta}
                             getOptionValue={option => option.id}
                             options={this.state.ServerCExist}
                         />
+                        <div>
+                            <br />
+                            <p align="left">Añadir cuenta no registrada</p>
+                            <Input onChange={this.onChange} name="CuentaNE" type="text" placeholder="Name input" value={CuentaNE} />
+                        </div>
+                        <br />
                         <Button.Group>
                             <Link to={{
                                 pathname: '/nuevacuenta',
@@ -88,7 +100,12 @@ class NuevaCuenta extends Component {
                 </Content>
                 <Content>
                     <p align="left">
-                        <Link to="/cuentas">
+                        <Link to={{
+                            pathname: '/cuentas',
+                            state: {
+                                ValorCuenta: 1
+                            }
+                        }}>
                             <Button>&#60;&#60;Pagina anterior</Button>
                         </Link>
                     </p>
