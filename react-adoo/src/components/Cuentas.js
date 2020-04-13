@@ -13,28 +13,31 @@ class Cuentas extends Component {
     state = ({
         CuentasExistentes: localStorage.getItem('CuentasExistentes') ? JSON.parse(localStorage.getItem("CuentasExistentes")) : [],
         select: localStorage.getItem("select") ? localStorage.getItem("select") : '...',
-        CuentasNExistentes: []
+        CuentasNExistentes: localStorage.getItem('CuentasNExistentes') ? JSON.parse(localStorage.getItem("CuentasNExistentes")) : [],
     })
     componentDidMount() {
-        const { ValorCuenta } = this.props.location.state
+        let { ValorCuenta } = this.props.location.state
         const sel = { idCM: ValorCuenta }
         var self = this;
-        if (ValorCuenta !== -1) {
-            axios.post('/selectregistromercancia', sel)
-                .then(function (response) {
-                    self.setState({ CuentasExistentes: response.data });
-                    localStorage.setItem("CuentasExistentes", JSON.stringify(response.data));
-                })
-                .catch(function (error) {
-                });
-            if (ValorCuenta === 0) {
-                this.setState({ select: 'Inventarios Perpetuos' });
-                localStorage.setItem("select", 'Inventarios Perpetuos');
-            } else {
-                this.setState({ select: 'Analítico o Pormenorizado' });
-                localStorage.setItem("select", 'Analítico o Pormenorizado');
+        if (!localStorage.getItem('CuentasExistentes')) {
+            if (ValorCuenta !== -1) {
+                axios.post('/selectregistromercancia', sel)
+                    .then(function (response) {
+                        self.setState({ CuentasExistentes: response.data });
+                        localStorage.setItem("CuentasExistentes", JSON.stringify(response.data));
+                    })
+                    .catch(function (error) {
+                    });
+                if (ValorCuenta === 0) {
+                    this.setState({ select: 'Inventarios Perpetuos' });
+                    localStorage.setItem("select", 'Inventarios Perpetuos');
+                } else {
+                    this.setState({ select: 'Analítico o Pormenorizado' });
+                    localStorage.setItem("select", 'Analítico o Pormenorizado');
+                }
             }
         }
+        ValorCuenta = -1
     }
     render() {
         return (
@@ -51,13 +54,18 @@ class Cuentas extends Component {
                             <Columns.Column size={4}>
                             </Columns.Column>
                             <Columns.Column size={4}>
-                            <List hoverable>
-                                {
-                                    this.state.CuentasExistentes.map(CuentasExistentes => {
-                                        return <List.Item key={CuentasExistentes.id}>{CuentasExistentes.NombreCuenta}</List.Item>
-                                    })
-                                }
-                            </List>
+                                <List hoverable>
+                                    {
+                                        this.state.CuentasExistentes.map(CuentasExistentes => {
+                                            return <List.Item key={CuentasExistentes.id}>{CuentasExistentes.NombreCuenta}</List.Item>
+                                        })
+                                    }
+                                    {
+                                        this.state.CuentasNExistentes.map(CuentasNExistentes => {
+                                            return <List.Item key={CuentasNExistentes.id}>{CuentasNExistentes.NombreCuenta}</List.Item>
+                                        })
+                                    }
+                                </List>
                             </Columns.Column>
                             <Columns.Column size={4}>
                             </Columns.Column>

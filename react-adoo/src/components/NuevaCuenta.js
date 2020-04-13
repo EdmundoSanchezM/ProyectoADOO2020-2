@@ -11,16 +11,52 @@ import List from 'react-bulma-components/lib/components/list';
 import { Input } from 'react-bulma-components/lib/components/form';
 import Select from 'react-select';
 class NuevaCuenta extends Component {
-    state = ({
-        CuentasExistentes: localStorage.getItem('CuentasExistentes') ? JSON.parse(localStorage.getItem("CuentasExistentes")) : [],
-        select: localStorage.getItem("select") ? localStorage.getItem("select") : '...',
-        ServerCExist: [],
-        CuentasNExistentes: [],
-        selected: '',
-        CuentaNE: ''
-    })
-    onChange = (selected) => {
-        this.setState({ selected });
+    constructor(props) {
+        super(props);
+        this.state = {
+            CuentasExistentes: localStorage.getItem('CuentasExistentes') ? JSON.parse(localStorage.getItem("CuentasExistentes")) : [],
+            CuentasNExistentes: localStorage.getItem('CuentasNExistentes') ? JSON.parse(localStorage.getItem("CuentasNExistentes")) : [],
+            ServerCExist: [],
+            selected: '',
+            CuentaNE: '',
+            EstadosSelect: []
+        };
+        this.handleClick = this.handleClick.bind(this);
+    }
+
+    handleChange = selectedOptions => {
+        this.setState({ EstadosSelect: selectedOptions });
+    };
+
+    handleClick() {
+        let CuentasNExsCop = JSON.parse(JSON.stringify(this.state.CuentasNExistentes))
+        CuentasNExsCop[this.state.CuentasNExistentes.length] = { 'NombreCuenta': this.state.CuentaNE, 'id': this.state.CuentasNExistentes.length }
+        let ArrayTemp = JSON.parse(JSON.stringify(this.state.CuentasExistentes))
+        let SizeCE = this.state.CuentasExistentes.length
+        let i = 0
+        for (i; i < this.state.EstadosSelect.length; i++) {
+            ArrayTemp[SizeCE] = { 'NombreCuenta': this.state.EstadosSelect[i].NombreCuenta, 'id': SizeCE }
+            SizeCE = SizeCE + 1
+        }
+        if (this.state.CuentaNE === '' && i === 0) {
+            alert("No hay cuentas que agregar")
+        } else {
+            if (this.state.CuentaNE === '') {
+                this.setState({
+                    CuentasExistentes: ArrayTemp
+                });
+            } else {
+                this.setState({
+                    CuentasExistentes: ArrayTemp,
+                    CuentasNExistentes: CuentasNExsCop
+                },() => this.consumeData(this.state.CuentasExistentes,this.state.CuentasNExistentes));
+            }
+            
+        }
+    }
+    consumeData(CE,CNE){
+        localStorage.setItem("CuentasExistentes", JSON.stringify(CE));
+        localStorage.setItem("CuentasNExistentes", JSON.stringify(CNE));
     }
     componentDidMount() {
         var self = this;
@@ -58,6 +94,7 @@ class NuevaCuenta extends Component {
                                     this.state.CuentasExistentes.map(CuentasExistentes => {
                                         return <List.Item key={CuentasExistentes.id}>{CuentasExistentes.NombreCuenta}</List.Item>
                                     })
+
                                 }
                             </List>
                         </Columns.Column>
@@ -65,36 +102,39 @@ class NuevaCuenta extends Component {
                             <Heading subtitle size={6}>
                                 Cuentas inexistentes
                             </Heading>
+                            <List hoverable>
+                                {
+                                    this.state.CuentasNExistentes.map(CuentasNExistentes => {
+                                        return <List.Item key={CuentasNExistentes.id}>{CuentasNExistentes.NombreCuenta}</List.Item>
+                                    })
+                                }
+                            </List>
                         </Columns.Column>
                     </Columns>
                     <Box>
+                        <p align="left">Añadir cuentas registradas</p>
                         <Select
                             isMulti
-                            name="colors"
+                            name="cuentas"
                             className="basic-multi-select"
                             classNamePrefix="select"
                             placeholder={'Seleccionar cuentas'}
                             getOptionLabel={option => option.NombreCuenta}
                             getOptionValue={option => option.id}
                             options={this.state.ServerCExist}
+                            value={this.state && this.state.EstadosSelect}
+                            onChange={this.handleChange}
                         />
                         <div>
                             <br />
                             <p align="left">Añadir cuenta no registrada</p>
-                            <Input onChange={this.onChange} name="CuentaNE" type="text" placeholder="Name input" value={CuentaNE} />
+                            <Input onChange={this.onChange} name="CuentaNE" type="text" placeholder="Escribir cuenta" value={CuentaNE} />
                         </div>
                         <br />
                         <Button.Group>
-                            <Link to={{
-                                pathname: '/nuevacuenta',
-                                state: {
-                                    ValorCuenta: 1
-                                }
-                            }}>
-                                <Button renderAs="button" color="success">
-                                    (+)Añadir cuenta
-                                </Button>
-                            </Link>
+                            <Button renderAs="button" color="success" onClick={this.handleClick}>
+                                Añadir cuentas
+                            </Button>
                         </Button.Group>
                     </Box>
                 </Content>
@@ -103,7 +143,8 @@ class NuevaCuenta extends Component {
                         <Link to={{
                             pathname: '/cuentas',
                             state: {
-                                ValorCuenta: 1
+                                ValorCuenta: -1
+
                             }
                         }}>
                             <Button>&#60;&#60;Pagina anterior</Button>
