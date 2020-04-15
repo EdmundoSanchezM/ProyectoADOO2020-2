@@ -144,7 +144,6 @@ class NuevaCuenta extends Component {
                             pathname: '/cuentas',
                             state: {
                                 ValorCuenta: -1
-
                             }
                         }}>
                             <Button>&#60;&#60;Pagina anterior</Button>

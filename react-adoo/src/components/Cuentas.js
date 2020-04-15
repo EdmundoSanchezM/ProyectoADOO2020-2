@@ -57,12 +57,30 @@ class Cuentas extends Component {
                                 <List hoverable>
                                     {
                                         this.state.CuentasExistentes.map(CuentasExistentes => {
-                                            return <List.Item key={CuentasExistentes.id}>{CuentasExistentes.NombreCuenta}</List.Item>
+                                            return <List.Item key={CuentasExistentes.id}>
+                                                <Link to={{
+                                                    pathname: '/infocuenta',
+                                                    state: {
+                                                        NombreCuenta: CuentasExistentes.NombreCuenta
+                                                    }
+                                                }}>
+                                                    {CuentasExistentes.NombreCuenta}
+                                                </Link>
+                                            </List.Item>
                                         })
                                     }
                                     {
                                         this.state.CuentasNExistentes.map(CuentasNExistentes => {
-                                            return <List.Item key={CuentasNExistentes.id}>{CuentasNExistentes.NombreCuenta}</List.Item>
+                                            return <List.Item key={CuentasNExistentes.id}>
+                                                <Link to={{
+                                                    pathname: '/infocuenta',
+                                                    state: {
+                                                        NombreCuenta: CuentasNExistentes.NombreCuenta
+                                                    }
+                                                }}>
+                                                    {CuentasNExistentes.NombreCuenta}
+                                                </Link>
+                                            </List.Item>
                                         })
                                     }
                                 </List>
