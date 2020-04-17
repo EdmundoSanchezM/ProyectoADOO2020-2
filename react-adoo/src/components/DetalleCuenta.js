@@ -12,6 +12,8 @@ class DetalleCuenta extends Component {
         CuentasExistentes: localStorage.getItem('CuentasExistentes') ? JSON.parse(localStorage.getItem("CuentasExistentes")) : [],
         NombreCuenta: [],
         CuentasNExistentes: localStorage.getItem('CuentasNExistentes') ? JSON.parse(localStorage.getItem("CuentasNExistentes")) : [],
+        MovimientosIzquierda: localStorage.getItem('MovimientosIzq') ? JSON.parse(localStorage.getItem("MovimientosIzq")) : [],
+        MovimientosDerecha: localStorage.getItem('MovimientosDer') ? JSON.parse(localStorage.getItem("MovimientosDer")) : [],
     })
     componentDidMount() {
         let ValorCuenta = this.props.location.state
@@ -35,13 +37,11 @@ class DetalleCuenta extends Component {
                                 </Heading>
                                 <List hoverable>
                                     {
-                                        this.state.CuentasExistentes.map(CuentasExistentes => {
-                                            return <List.Item key={CuentasExistentes.id}>{CuentasExistentes.NombreCuenta}</List.Item>
-                                        })
-                                    }
-                                    {
-                                        this.state.CuentasNExistentes.map(CuentasNExistentes => {
-                                            return <List.Item key={CuentasNExistentes.id}>{CuentasNExistentes.NombreCuenta}</List.Item>
+                                        this.state.MovimientosIzquierda.map(MovIzq => {
+                                            if(MovIzq.NombreCuenta===this.state.NombreCuenta.NombreCuenta){
+                                                return <List.Item key={MovIzq.id}>{MovIzq.NumMovimiento}.- ${MovIzq.Cantidad}</List.Item>
+                                            }
+                                            return null
                                         })
                                     }
                                 </List>
@@ -62,14 +62,12 @@ class DetalleCuenta extends Component {
                                     Movimientos
                                 </Heading>
                                 <List hoverable>
-                                    {
-                                        this.state.CuentasExistentes.map(CuentasExistentes => {
-                                            return <List.Item key={CuentasExistentes.id}>{CuentasExistentes.NombreCuenta}</List.Item>
-                                        })
-                                    }
-                                    {
-                                        this.state.CuentasNExistentes.map(CuentasNExistentes => {
-                                            return <List.Item key={CuentasNExistentes.id}>{CuentasNExistentes.NombreCuenta}</List.Item>
+                                {
+                                        this.state.MovimientosDerecha.map(MovDer => {
+                                            if(MovDer.NombreCuenta===this.state.NombreCuenta.NombreCuenta){
+                                                return <List.Item key={MovDer.id}>{MovDer.NumMovimiento}.- ${MovDer.Cantidad}</List.Item>
+                                            }
+                                            return null
                                         })
                                     }
                                 </List>
@@ -77,7 +75,7 @@ class DetalleCuenta extends Component {
                                     pathname: '/addmovimiento',
                                     state: {
                                         Nombre: this.state.NombreCuenta.NombreCuenta,
-                                        Lado: 'Izquierdo'
+                                        Lado: 'Derecho'
                                     }
                                 }}>
                                     < Button renderAs="button" color="info" >
