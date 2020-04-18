@@ -10,6 +10,7 @@ import Section from 'react-bulma-components/lib/components/section';
 import List from 'react-bulma-components/lib/components/list';
 import { Input } from 'react-bulma-components/lib/components/form';
 import Select from 'react-select';
+import SweetAlert from 'react-bootstrap-sweetalert';
 class NuevaCuenta extends Component {
     constructor(props) {
         super(props);
@@ -19,7 +20,8 @@ class NuevaCuenta extends Component {
             ServerCExist: [],
             selected: '',
             CuentaNE: '',
-            EstadosSelect: []
+            EstadosSelect: [],
+            alert:null
         };
         this.handleClick = this.handleClick.bind(this);
     }
@@ -34,29 +36,70 @@ class NuevaCuenta extends Component {
         let ArrayTemp = JSON.parse(JSON.stringify(this.state.CuentasExistentes))
         let SizeCE = this.state.CuentasExistentes.length
         let i = 0
+        let j = 0
+        let check = false
         for (i; i < this.state.EstadosSelect.length; i++) {
-            ArrayTemp[SizeCE] = { 'NombreCuenta': this.state.EstadosSelect[i].NombreCuenta, 'id': SizeCE }
-            SizeCE = SizeCE + 1
+            check=false
+            for (j=0; j < this.state.CuentasExistentes.length; j++) {
+                if (this.state.CuentasExistentes[j].NombreCuenta === this.state.EstadosSelect[i].NombreCuenta) {
+                    check=true
+                    this.setState({
+                        alert: (
+                            <SweetAlert
+                                warning
+                                title="Selecciono cuentas ya registradas"
+                                onConfirm={this.hideAlert}
+                                onCancel={this.hideAlert} />
+                        )
+                    })
+                }
+            }
+            if (!check) {
+                ArrayTemp[SizeCE] = { 'NombreCuenta': this.state.EstadosSelect[i].NombreCuenta, 'id': SizeCE }
+                SizeCE = SizeCE + 1
+            }
         }
         if (this.state.CuentaNE === '' && i === 0) {
-            alert("No hay cuentas que agregar")
+            this.setState({
+                alert: (
+                    <SweetAlert
+                        warning
+                        title="No hay cuentas que agregar"
+                        onConfirm={this.hideAlert}
+                        onCancel={this.hideAlert} />
+                )
+            })
         } else {
             if (this.state.CuentaNE === '') {
                 this.setState({
                     CuentasExistentes: ArrayTemp
-                });
+                }, () => this.consumeData(this.state.CuentasExistentes, this.state.CuentasNExistentes))
             } else {
                 this.setState({
                     CuentasExistentes: ArrayTemp,
                     CuentasNExistentes: CuentasNExsCop
-                },() => this.consumeData(this.state.CuentasExistentes,this.state.CuentasNExistentes));
+                }, () => this.consumeData(this.state.CuentasExistentes, this.state.CuentasNExistentes));
             }
-            
-        }
+            this.setState({
+                alert: (
+                    <SweetAlert
+                        success
+                        title="Cuentas agregadas exitosamente"
+                        onConfirm={this.hideAlert}
+                        onCancel={this.hideAlert} />
+                )
+            })
+        }   
     }
-    consumeData(CE,CNE){
+    hideAlert = () => {
+        this.setState({
+            alert: null
+        });
+    }
+    consumeData(CE, CNE) {
         localStorage.setItem("CuentasExistentes", JSON.stringify(CE));
         localStorage.setItem("CuentasNExistentes", JSON.stringify(CNE));
+        this.setState({ EstadosSelect: [], CuentaNE: '' })
     }
     componentDidMount() {
         var self = this;
@@ -150,6 +193,7 @@ class NuevaCuenta extends Component {
                         </Link>
                     </p>
                 </Content>
+                {this.state.alert}
             </div>
         </Section>
         );

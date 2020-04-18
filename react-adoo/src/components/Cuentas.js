@@ -118,7 +118,6 @@ class Cuentas extends Component {
             </Section >
         )
     }
-
 }
 
 
