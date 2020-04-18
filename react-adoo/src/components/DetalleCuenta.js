@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Link,Redirect } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 import Columns from 'react-bulma-components/lib/components/columns';
 import Content from 'react-bulma-components/lib/components/content';
 import Heading from 'react-bulma-components/lib/components/heading';
@@ -18,23 +18,50 @@ class DetalleCuenta extends Component {
             MovimientosIzquierda: localStorage.getItem('MovimientosIzq') ? JSON.parse(localStorage.getItem("MovimientosIzq")) : [],
             MovimientosDerecha: localStorage.getItem('MovimientosDer') ? JSON.parse(localStorage.getItem("MovimientosDer")) : [],
             alert: null,
-            redirect: false
+            redirect: false,
+            DataMov:[]
         };
+        this.handleButtonPress = this.handleButtonPress.bind(this)
+        this.handleButtonRelease = this.handleButtonRelease.bind(this)
     }
-    showAlert(title) {
-        this.setState({
-            alert: (
-                <SweetAlert
-                    warning
-                    showCancel
-                    cancelBtnText="Cancelar"
-                    confirmBtnText="Aceptar"
-                    confirmBtnBsStyle="danger"
-                    title={title}
-                    onConfirm={this.ConfirmOpt}
-                    onCancel={this.CancelOpt} />
-            )
-        })
+    handleButtonPress = (e, data) => {
+        this.buttonPressTimer = setTimeout(() => this.showAlert("¿Desea borrar este movimiento?", data), 2500);
+    }
+
+    handleButtonRelease = () => {
+        clearTimeout(this.buttonPressTimer);
+    }
+    showAlert(title, data) {
+        if (data === null) {
+            this.setState({
+                alert: (
+                    <SweetAlert
+                        warning
+                        showCancel
+                        cancelBtnText="Cancelar"
+                        confirmBtnText="Aceptar"
+                        confirmBtnBsStyle="danger"
+                        title={title}
+                        onConfirm={this.ConfirmOpt}
+                        onCancel={this.CancelOpt} />
+                )
+            })
+        } else {
+            this.setState({
+                alert: (
+                    <SweetAlert
+                        warning
+                        showCancel
+                        cancelBtnText="Cancelar"
+                        confirmBtnText="Aceptar"
+                        confirmBtnBsStyle="danger"
+                        title={title}
+                        onConfirm={this.ConfirmOpt2}
+                        onCancel={this.CancelOpt2} />
+                )
+            })
+        }
+
     }
     CancelOpt = () => {
         this.setState({
@@ -42,6 +69,17 @@ class DetalleCuenta extends Component {
                 <SweetAlert
                     warning
                     title="No se borro la cuenta"
+                    onConfirm={this.hideAlert}
+                    onCancel={this.hideAlert} />
+            )
+        })
+    }
+    CancelOpt2 = () => {
+        this.setState({
+            alert: (
+                <SweetAlert
+                    warning
+                    title="No se borro el movimiento"
                     onConfirm={this.hideAlert}
                     onCancel={this.hideAlert} />
             )
@@ -57,7 +95,15 @@ class DetalleCuenta extends Component {
             alert: (
                 <SweetAlert success title="Cuenta borrada exitosamente" onConfirm={this.hideAlert2} onCancel={this.hideAlert2} />
             ),
-            
+
+        })
+    }
+    ConfirmOpt2 = () => {
+        this.setState({
+            alert: (
+                <SweetAlert success title="Movimiento borrado exitosamente" onConfirm={this.hideAlert3} onCancel={this.hideAlert3} />
+            ),
+
         })
     }
     hideAlert2 = () => {
@@ -69,11 +115,26 @@ class DetalleCuenta extends Component {
             alert: null,
             MovimientosDerecha: filtredData2,
             MovimientosIzquierda: filtredData,
-            CuentasExistentes : filtredData3,
+            CuentasExistentes: filtredData3,
             CuentasNExistentes: filtredData4
-        }, () => this.consumeData(this.state.MovimientosIzquierda, this.state.MovimientosDerecha,this.state.CuentasExistentes,this.state.CuentasNExistentes));
+        }, () => this.consumeData(this.state.MovimientosIzquierda, this.state.MovimientosDerecha, this.state.CuentasExistentes, this.state.CuentasNExistentes));
     }
-    consumeData(MovI,MovD,CE,CNE) {
+    hideAlert3 = () => {
+        if(this.state.DataMov.Lado==="Izq"){
+            const filtredData = this.state.MovimientosIzquierda.filter(item => item.id !== this.state.DataMov.id);
+            this.setState({
+                alert: null,
+                MovimientosIzquierda: filtredData
+            }, () => this.consumeData2(this.state.MovimientosIzquierda));
+        }else if(this.state.DataMov.Lado==="Der"){
+            const filtredData = this.state.MovimientosDerecha.filter(item => item.id !== this.state.DataMov.id);
+            this.setState({
+                alert: null,
+                MovimientosDerecha: filtredData
+            }, () => this.consumeData3(this.state.MovimientosDerecha));
+        }
+    }
+    consumeData(MovI, MovD, CE, CNE) {
         localStorage.setItem("MovimientosIzq", JSON.stringify(MovI));
         localStorage.setItem("MovimientosDer", JSON.stringify(MovD));
         localStorage.setItem("CuentasExistentes", JSON.stringify(CE));
@@ -81,6 +142,12 @@ class DetalleCuenta extends Component {
         this.setState({
             redirect: true
         });
+    }
+    consumeData2(MovI) {
+        localStorage.setItem("MovimientosIzq", JSON.stringify(MovI));
+    }
+    consumeData3(MovD) {
+        localStorage.setItem("MovimientosDer", JSON.stringify(MovD));
     }
     componentDidMount() {
         let ValorCuenta = this.props.location.state
@@ -114,7 +181,12 @@ class DetalleCuenta extends Component {
                                     {
                                         this.state.MovimientosIzquierda.map(MovIzq => {
                                             if (MovIzq.NombreCuenta === this.state.NombreCuenta.NombreCuenta) {
-                                                return <List.Item key={MovIzq.id}>{MovIzq.NumMovimiento}.- ${MovIzq.Cantidad}</List.Item>
+                                                return <List.Item key={MovIzq.id}
+                                                    onTouchStart={((e) => this.handleButtonPress(e, this.setState({DataMov: {"id":MovIzq.id,"Lado":"Izq"}})))}
+                                                    onTouchEnd={this.handleButtonRelease}
+                                                    onMouseDown={((e) => this.handleButtonPress(e, this.setState({DataMov: {"id":MovIzq.id,"Lado":"Izq"}})))}
+                                                    onMouseUp={this.handleButtonRelease}
+                                                    onMouseLeave={this.handleButtonRelease}>{MovIzq.NumMovimiento}.- ${MovIzq.Cantidad}</List.Item>
                                             }
                                             return null
                                         })
@@ -140,7 +212,12 @@ class DetalleCuenta extends Component {
                                     {
                                         this.state.MovimientosDerecha.map(MovDer => {
                                             if (MovDer.NombreCuenta === this.state.NombreCuenta.NombreCuenta) {
-                                                return <List.Item key={MovDer.id}>{MovDer.NumMovimiento}.- ${MovDer.Cantidad}</List.Item>
+                                                return <List.Item key={MovDer.id}
+                                                    onTouchStart={((e) => this.handleButtonPress(e, this.setState({DataMov: {"id":MovDer.id,"Lado":"Der"}})))}
+                                                    onTouchEnd={this.handleButtonRelease}
+                                                    onMouseDown={((e) => this.handleButtonPress(e, this.setState({DataMov: {"id":MovDer.id,"Lado":"Der"}})))}
+                                                    onMouseUp={this.handleButtonRelease}
+                                                    onMouseLeave={this.handleButtonRelease}>{MovDer.NumMovimiento}.- ${MovDer.Cantidad}</List.Item>
                                             }
                                             return null
                                         })
@@ -160,7 +237,7 @@ class DetalleCuenta extends Component {
 
                             </Columns.Column>
                         </Columns>
-                        <Button renderAs="button" color="danger" onClick={() => this.showAlert('¿Desea eliminar la cuenta?')}>
+                        <Button renderAs="button" color="danger" onClick={() => this.showAlert('¿Desea eliminar la cuenta?', null)}>
                             Eliminar cuenta
                         </Button>
                     </Content>
