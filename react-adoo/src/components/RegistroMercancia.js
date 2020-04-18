@@ -7,6 +7,9 @@ import Columns from 'react-bulma-components/lib/components/columns';
 import Section from 'react-bulma-components/lib/components/section';
 
 export default class RegistroMercancia extends Component {
+    componentDidMount(){
+        localStorage.clear();
+    }
     render() {
         return (
             <Section>

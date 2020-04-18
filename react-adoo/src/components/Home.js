@@ -4,6 +4,7 @@ import Content from 'react-bulma-components/lib/components/content';
 import Heading from 'react-bulma-components/lib/components/heading';
 import Button from 'react-bulma-components/lib/components/button';
 import { Link } from 'react-router-dom';
+
 const Home = () => {
     return (
         <Section>
