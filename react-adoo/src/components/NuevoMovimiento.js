@@ -45,7 +45,6 @@ class NuevoMovimiento extends Component {
     }
 
     GuardarMovimiento() {
-
         if (this.state.NumMovimiento === '' || this.state.NumMovimiento === '') {
             this.setState({
                 alert: (
@@ -54,17 +53,83 @@ class NuevoMovimiento extends Component {
             })
         } else {
             if (this.state.NombreCuenta.Lado === "Izquierdo") {
-                let MovimientosCop = JSON.parse(JSON.stringify(this.state.MovimientosIzquierda))
-                MovimientosCop[this.state.MovimientosIzquierda.length] = {
-                    'id': this.state.MovimientosIzquierda.length
-                    , 'NombreCuenta': this.state.NombreCuenta.Nombre
-                    , 'NumMovimiento': this.state.NumMovimiento
-                    , 'Cantidad': this.state.Cantidad
-                    , 'Check': false
+                //Chechamos primero la condicion de no hacer el mismo numero de movimiento en ambos lados
+                let condicion0 = this.state.MovimientosDerecha.filter(item => (item.NumMovimiento === this.state.NumMovimiento && item.NombreCuenta === this.state.NombreCuenta.Nombre));
+                let condicion1 = this.state.MovimientosDerecha.filter(item => item.NumMovimiento === this.state.NumMovimiento);
+                let condicion11 = this.state.MovimientosIzquierda.filter(item => item.NumMovimiento === this.state.NumMovimiento)
+                let condicion2 = []
+                let condicion22 = []
+                for (let i = 0; i < this.state.MovimientosDerecha.length; i++) {
+                    condicion2[i] = this.state.MovimientosDerecha[i].NumMovimiento
                 }
-                this.setState({
-                    MovimientosIzquierda: MovimientosCop
-                }, () => this.consumeData(this.state.MovimientosIzquierda, 0));
+                for (let i = 0; i < this.state.MovimientosIzquierda.length; i++) {
+                    condicion22[i] = this.state.MovimientosIzquierda[i].NumMovimiento
+                }
+                let NumMovimientoDM = Math.max.apply(Math, condicion2);
+                let NumMovimientoIM = Math.max.apply(Math, condicion22);
+                let ic1 = 0;
+                let TotalCantidadD = 0;
+                let TotalCantidadI = 0;
+                let checkD;
+                let checkI;
+                for (ic1; ic1 < condicion1.length; ic1++)
+                    TotalCantidadD = TotalCantidadD + parseInt(condicion1[ic1].Cantidad);
+                ic1 = 0
+                for (ic1; ic1 < condicion11.length; ic1++)
+                    TotalCantidadI = TotalCantidadI + parseInt(condicion11[ic1].Cantidad);
+                for (let i = 0; i < this.state.MovimientosDerecha.length; i++) {
+                    if(NumMovimientoDM===this.state.MovimientosDerecha[i].NumMovimiento)
+                        checkD=this.state.MovimientosDerecha[i].Check
+                }
+                for (let i = 0; i < this.state.MovimientosIzquierda.length; i++) {
+                    if(NumMovimientoIM===this.state.MovimientosIzquierda[i].NumMovimiento)
+                        checkI=this.state.MovimientosDerecha[i].Check
+                }
+                if (condicion0.length >= 1) {
+                    this.setState({ alert: (<SweetAlert warning confirmBtnText="Regresar" title="No se permite abonar y cargar en un mismo movimiento" onConfirm={this.hideAlert} onCancel={this.hideAlert} />) })
+                } else if ((TotalCantidadD - TotalCantidadI - this.state.Cantidad) === 0) {
+                    let MovimientosCop = JSON.parse(JSON.stringify(this.state.MovimientosIzquierda))
+                    ic1 = 0
+                    for (ic1; ic1 < MovimientosCop.length; ic1++) {
+                        if (MovimientosCop[ic1].NumMovimiento === this.state.NumMovimiento) {
+                            MovimientosCop[ic1].Check = true
+                        }
+                    }
+                    let MovimientosCopD = JSON.parse(JSON.stringify(this.state.MovimientosDerecha))
+                    ic1 = 0
+                    for (ic1; ic1 < MovimientosCopD.length; ic1++) {
+                        if (MovimientosCopD[ic1].NumMovimiento === this.state.NumMovimiento) {
+                            MovimientosCopD[ic1].Check = true
+                        }
+                    }
+                    MovimientosCop[this.state.MovimientosIzquierda.length] = {
+                        'id': this.state.MovimientosIzquierda.length
+                        , 'NombreCuenta': this.state.NombreCuenta.Nombre
+                        , 'NumMovimiento': this.state.NumMovimiento
+                        , 'Cantidad': this.state.Cantidad
+                        , 'Check': true
+                    }
+                    this.setState({
+                        MovimientosIzquierda: MovimientosCop
+                        , MovimientosDerecha: MovimientosCopD
+                    }, () => this.consumeData(this.state.MovimientosIzquierda, this.state.MovimientosDerecha, 0));
+                } else if ((TotalCantidadD - TotalCantidadI - this.state.Cantidad) < 0 && TotalCantidadD!==0) {
+                    this.setState({ alert: (<SweetAlert warning confirmBtnText="Regresar" title="Movimiento no valido" onConfirm={this.hideAlert} onCancel={this.hideAlert}>Tip: Revise las cantidades del mismo numero de movimiento</SweetAlert>) })
+                } else if ((NumMovimientoDM < this.state.NumMovimiento && !checkD)|| (NumMovimientoIM < this.state.NumMovimiento && !checkI)) {
+                    this.setState({ alert: (<SweetAlert warning confirmBtnText="Regresar" title="Movimiento no valido" onConfirm={this.hideAlert} onCancel={this.hideAlert}>Tip: Aun no acaba el movimiento anterior</SweetAlert>) })
+                } else {
+                    let MovimientosCop = JSON.parse(JSON.stringify(this.state.MovimientosIzquierda))
+                    MovimientosCop[this.state.MovimientosIzquierda.length] = {
+                        'id': this.state.MovimientosIzquierda.length
+                        , 'NombreCuenta': this.state.NombreCuenta.Nombre
+                        , 'NumMovimiento': this.state.NumMovimiento
+                        , 'Cantidad': this.state.Cantidad
+                        , 'Check': false
+                    }
+                    this.setState({
+                        MovimientosIzquierda: MovimientosCop
+                    }, () => this.consumeData(this.state.MovimientosIzquierda, null, 0));
+                }
             } else if (this.state.NombreCuenta.Lado === "Derecho") {
                 let MovimientosCop = JSON.parse(JSON.stringify(this.state.MovimientosDerecha))
                 MovimientosCop[this.state.MovimientosDerecha.length] = {
@@ -76,15 +141,25 @@ class NuevoMovimiento extends Component {
                 }
                 this.setState({
                     MovimientosDerecha: MovimientosCop
-                }, () => this.consumeData(this.state.MovimientosDerecha, 1));
+                }, () => this.consumeData(null, this.state.MovimientosDerecha, 1));
             }
         }
     }
-    consumeData(Mov, sel) {
+    consumeData(MovI, MovD, sel) {
         if (sel === 0) {
-            localStorage.setItem("MovimientosIzq", JSON.stringify(Mov));
+            if (MovD === null)
+                localStorage.setItem("MovimientosIzq", JSON.stringify(MovI));
+            else {
+                localStorage.setItem("MovimientosIzq", JSON.stringify(MovI));
+                localStorage.setItem("MovimientosDer", JSON.stringify(MovD));
+            }
         } else if (sel === 1) {
-            localStorage.setItem("MovimientosDer", JSON.stringify(Mov));
+            if (MovI === null)
+                localStorage.setItem("MovimientosDer", JSON.stringify(MovD));
+            else {
+                localStorage.setItem("MovimientosIzq", JSON.stringify(MovI));
+                localStorage.setItem("MovimientosDer", JSON.stringify(MovD));
+            }
         }
         this.setState({
             redirect: true
