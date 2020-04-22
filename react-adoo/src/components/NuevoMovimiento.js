@@ -85,9 +85,8 @@ class NuevoMovimiento extends Component {
                     if (NumMovimientoIM === parseInt(this.state.MovimientosIzquierda[i].NumMovimiento))
                         checkI = this.state.MovimientosIzquierda[i].Check
                 }
-                let checkDVA = condicion1[0].Check;
-                let checkIVA = condicion11[0].Check;
-
+                let checkDVA = (condicion1.length===0)?false:condicion1[0].Check;
+                let checkIVA = (condicion11.length===0)?false:condicion11[0].Check;
                 if (condicion0.length >= 1) {
                     this.setState({ alert: (<SweetAlert warning confirmBtnText="Regresar" title="No se permite abonar y cargar en un mismo movimiento" onConfirm={this.hideAlert} onCancel={this.hideAlert} />) })
                 } else if ((TotalCantidadD - TotalCantidadI - this.state.Cantidad) === 0) {
@@ -192,8 +191,8 @@ class NuevoMovimiento extends Component {
                     if (NumMovimientoIM === parseInt(this.state.MovimientosIzquierda[i].NumMovimiento))
                         checkI = this.state.MovimientosIzquierda[i].Check
                 }
-                let checkDVA = condicion1[0].Check;
-                let checkIVA = condicion11[0].Check;
+                let checkDVA = (condicion1.length===0)?false:condicion1[0].Check;
+                let checkIVA = (condicion11.length===0)?false:condicion11[0].Check;
                 if (condicion0.length >= 1) {
                     this.setState({ alert: (<SweetAlert warning confirmBtnText="Regresar" title="No se permite abonar y cargar en un mismo movimiento" onConfirm={this.hideAlert} onCancel={this.hideAlert} />) })
                 } else if ((TotalCantidadI - TotalCantidadD - this.state.Cantidad) === 0) {
