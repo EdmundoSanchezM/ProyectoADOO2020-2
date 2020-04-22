@@ -73,10 +73,10 @@ class NuevoMovimiento extends Component {
                 let checkD;
                 let checkI;
                 for (ic1; ic1 < condicion1.length; ic1++)
-                    TotalCantidadD = TotalCantidadD + parseInt(condicion1[ic1].Cantidad);
+                    TotalCantidadD = TotalCantidadD + parseFloat(condicion1[ic1].Cantidad);
                 ic1 = 0
                 for (ic1; ic1 < condicion11.length; ic1++)
-                    TotalCantidadI = TotalCantidadI + parseInt(condicion11[ic1].Cantidad);
+                    TotalCantidadI = TotalCantidadI + parseFloat(condicion11[ic1].Cantidad);
                 for (let i = 0; i < this.state.MovimientosDerecha.length; i++) {
                     if (NumMovimientoDM === parseInt(this.state.MovimientosDerecha[i].NumMovimiento))
                         checkD = this.state.MovimientosDerecha[i].Check
@@ -180,10 +180,10 @@ class NuevoMovimiento extends Component {
                 let checkD;
                 let checkI;
                 for (ic1; ic1 < condicion1.length; ic1++)
-                    TotalCantidadD = TotalCantidadD + parseInt(condicion1[ic1].Cantidad);
+                    TotalCantidadD = TotalCantidadD + parseFloat(condicion1[ic1].Cantidad);
                 ic1 = 0
                 for (ic1; ic1 < condicion11.length; ic1++)
-                    TotalCantidadI = TotalCantidadI + parseInt(condicion11[ic1].Cantidad);
+                    TotalCantidadI = TotalCantidadI + parseFloat(condicion11[ic1].Cantidad);
                 for (let i = 0; i < this.state.MovimientosDerecha.length; i++) {
                     if (NumMovimientoDM === parseInt(this.state.MovimientosDerecha[i].NumMovimiento))
                         checkD = this.state.MovimientosDerecha[i].Check
