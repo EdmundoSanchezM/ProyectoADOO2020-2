@@ -19,7 +19,7 @@ class DetalleCuenta extends Component {
             MovimientosDerecha: localStorage.getItem('MovimientosDer') ? JSON.parse(localStorage.getItem("MovimientosDer")) : [],
             alert: null,
             redirect: false,
-            DataMov:[]
+            DataMov: []
         };
         this.handleButtonPress = this.handleButtonPress.bind(this)
         this.handleButtonRelease = this.handleButtonRelease.bind(this)
@@ -107,10 +107,32 @@ class DetalleCuenta extends Component {
         })
     }
     hideAlert2 = () => {
-        const filtredData = this.state.MovimientosIzquierda.filter(item => item.NombreCuenta !== this.state.NombreCuenta.NombreCuenta);
-        const filtredData2 = this.state.MovimientosDerecha.filter(item => item.NombreCuenta !== this.state.NombreCuenta.NombreCuenta);
-        const filtredData3 = this.state.CuentasExistentes.filter(item => item.NombreCuenta !== this.state.NombreCuenta.NombreCuenta);
-        const filtredData4 = this.state.CuentasNExistentes.filter(item => item.NombreCuenta !== this.state.NombreCuenta.NombreCuenta);
+        let filtredData = this.state.MovimientosIzquierda.filter(item => item.NombreCuenta !== this.state.NombreCuenta.NombreCuenta);
+        let filtredData2 = this.state.MovimientosDerecha.filter(item => item.NombreCuenta !== this.state.NombreCuenta.NombreCuenta);
+        let filtredData3 = this.state.CuentasExistentes.filter(item => item.NombreCuenta !== this.state.NombreCuenta.NombreCuenta);
+        let filtredData4 = this.state.CuentasNExistentes.filter(item => item.NombreCuenta !== this.state.NombreCuenta.NombreCuenta);
+        let NumeroMovimientosICE = this.state.MovimientosIzquierda.filter(item => item.NombreCuenta === this.state.NombreCuenta.NombreCuenta);
+        let NumeroMovimientosDCE = this.state.MovimientosDerecha.filter(item => item.NombreCuenta === this.state.NombreCuenta.NombreCuenta);
+        let ArregloMovimientosCE = []
+        for (let i = 0; i < NumeroMovimientosICE.length; i++) {
+            ArregloMovimientosCE[i] = NumeroMovimientosICE[i].NumMovimiento
+        }
+        let iArreglo = ArregloMovimientosCE.length
+        for (let i = 0; i < NumeroMovimientosDCE.length; i++, iArreglo++) {
+            ArregloMovimientosCE[iArreglo] = NumeroMovimientosDCE[i].NumMovimiento
+        }
+        for (let i = 0; i < filtredData.length; i++) {
+            for (let j = 0; j < ArregloMovimientosCE.length; j++) {
+                if (parseInt(filtredData[i].NumMovimiento) === parseInt(ArregloMovimientosCE[j]))
+                    filtredData[i].Check = false
+            }
+        }
+        for (let i = 0; i < filtredData2.length; i++) {
+            for (let j = 0; j < ArregloMovimientosCE.length; j++) {
+                if (parseInt(filtredData2[i].NumMovimiento) === parseInt(ArregloMovimientosCE[j]))
+                    filtredData2[i].Check = false
+            }
+        }
         this.setState({
             alert: null,
             MovimientosDerecha: filtredData2,
@@ -120,18 +142,42 @@ class DetalleCuenta extends Component {
         }, () => this.consumeData(this.state.MovimientosIzquierda, this.state.MovimientosDerecha, this.state.CuentasExistentes, this.state.CuentasNExistentes));
     }
     hideAlert3 = () => {
-        if(this.state.DataMov.Lado==="Izq"){
+        if (this.state.DataMov.Lado === "Izq") {
             const filtredData = this.state.MovimientosIzquierda.filter(item => item.id !== this.state.DataMov.id);
+            const NumeroMovimientosICE = this.state.MovimientosIzquierda.filter(item => item.id === this.state.DataMov.id);
+            const NumeroMovimientosDCE = this.state.MovimientosDerecha
+            let NumeroMovimientosBorrado= parseInt(NumeroMovimientosICE[0].NumMovimiento)
+            for (let i = 0; i < filtredData.length; i++) {
+                if (parseInt(filtredData[i].NumMovimiento) === NumeroMovimientosBorrado)
+                    filtredData[i].Check = false
+            }
+            for (let i = 0; i < NumeroMovimientosDCE.length; i++) {
+                if (parseInt(NumeroMovimientosDCE[i].NumMovimiento) === NumeroMovimientosBorrado)
+                    NumeroMovimientosDCE[i].Check = false
+            }
             this.setState({
                 alert: null,
-                MovimientosIzquierda: filtredData
-            }, () => this.consumeData2(this.state.MovimientosIzquierda));
-        }else if(this.state.DataMov.Lado==="Der"){
+                MovimientosIzquierda: filtredData,
+                MovimientosDerecha: NumeroMovimientosDCE
+            }, () => this.consumeData2(this.state.MovimientosIzquierda,this.state.MovimientosDerecha));
+        } else if (this.state.DataMov.Lado === "Der") {
             const filtredData = this.state.MovimientosDerecha.filter(item => item.id !== this.state.DataMov.id);
+            const NumeroMovimientosDCE = this.state.MovimientosDerecha.filter(item => item.id === this.state.DataMov.id);
+            const NumeroMovimientosICE = this.state.MovimientosIzquierda
+            let NumeroMovimientosBorrado= parseInt(NumeroMovimientosDCE[0].NumMovimiento)
+            for (let i = 0; i < filtredData.length; i++) {
+                if (parseInt(filtredData[i].NumMovimiento) === NumeroMovimientosBorrado)
+                    filtredData[i].Check = false
+            }
+            for (let i = 0; i < NumeroMovimientosICE.length; i++) {
+                if (parseInt(NumeroMovimientosICE[i].NumMovimiento) === NumeroMovimientosBorrado)
+                    NumeroMovimientosICE[i].Check = false
+            }
             this.setState({
                 alert: null,
+                MovimientosIzquierda: NumeroMovimientosICE,
                 MovimientosDerecha: filtredData
-            }, () => this.consumeData3(this.state.MovimientosDerecha));
+            }, () => this.consumeData2(this.state.MovimientosIzquierda,this.state.MovimientosDerecha));
         }
     }
     consumeData(MovI, MovD, CE, CNE) {
@@ -143,10 +189,8 @@ class DetalleCuenta extends Component {
             redirect: true
         });
     }
-    consumeData2(MovI) {
+    consumeData2(MovI,MovD) {
         localStorage.setItem("MovimientosIzq", JSON.stringify(MovI));
-    }
-    consumeData3(MovD) {
         localStorage.setItem("MovimientosDer", JSON.stringify(MovD));
     }
     componentDidMount() {
@@ -182,9 +226,9 @@ class DetalleCuenta extends Component {
                                         this.state.MovimientosIzquierda.map(MovIzq => {
                                             if (MovIzq.NombreCuenta === this.state.NombreCuenta.NombreCuenta) {
                                                 return <List.Item key={MovIzq.id}
-                                                    onTouchStart={((e) => this.handleButtonPress(e, this.setState({DataMov: {"id":MovIzq.id,"Lado":"Izq"}})))}
+                                                    onTouchStart={((e) => this.handleButtonPress(e, this.setState({ DataMov: { "id": MovIzq.id, "Lado": "Izq" } })))}
                                                     onTouchEnd={this.handleButtonRelease}
-                                                    onMouseDown={((e) => this.handleButtonPress(e, this.setState({DataMov: {"id":MovIzq.id,"Lado":"Izq"}})))}
+                                                    onMouseDown={((e) => this.handleButtonPress(e, this.setState({ DataMov: { "id": MovIzq.id, "Lado": "Izq" } })))}
                                                     onMouseUp={this.handleButtonRelease}
                                                     onMouseLeave={this.handleButtonRelease}>{MovIzq.NumMovimiento}.- ${MovIzq.Cantidad}</List.Item>
                                             }
@@ -213,9 +257,9 @@ class DetalleCuenta extends Component {
                                         this.state.MovimientosDerecha.map(MovDer => {
                                             if (MovDer.NombreCuenta === this.state.NombreCuenta.NombreCuenta) {
                                                 return <List.Item key={MovDer.id}
-                                                    onTouchStart={((e) => this.handleButtonPress(e, this.setState({DataMov: {"id":MovDer.id,"Lado":"Der"}})))}
+                                                    onTouchStart={((e) => this.handleButtonPress(e, this.setState({ DataMov: { "id": MovDer.id, "Lado": "Der" } })))}
                                                     onTouchEnd={this.handleButtonRelease}
-                                                    onMouseDown={((e) => this.handleButtonPress(e, this.setState({DataMov: {"id":MovDer.id,"Lado":"Der"}})))}
+                                                    onMouseDown={((e) => this.handleButtonPress(e, this.setState({ DataMov: { "id": MovDer.id, "Lado": "Der" } })))}
                                                     onMouseUp={this.handleButtonRelease}
                                                     onMouseLeave={this.handleButtonRelease}>{MovDer.NumMovimiento}.- ${MovDer.Cantidad}</List.Item>
                                             }

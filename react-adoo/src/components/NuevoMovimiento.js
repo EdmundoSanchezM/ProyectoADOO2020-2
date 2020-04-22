@@ -65,8 +65,8 @@ class NuevoMovimiento extends Component {
                 for (let i = 0; i < this.state.MovimientosIzquierda.length; i++) {
                     condicion22[i] = this.state.MovimientosIzquierda[i].NumMovimiento
                 }
-                let NumMovimientoDM = Math.max.apply(Math, condicion2)===-Infinity? this.state.NumMovimiento : Math.max.apply(Math, condicion2);
-                let NumMovimientoIM = Math.max.apply(Math, condicion22)===-Infinity? this.state.NumMovimiento : Math.max.apply(Math, condicion22);
+                let NumMovimientoDM = Math.max.apply(Math, condicion2) === -Infinity ? this.state.NumMovimiento : Math.max.apply(Math, condicion2);
+                let NumMovimientoIM = Math.max.apply(Math, condicion22) === -Infinity ? this.state.NumMovimiento : Math.max.apply(Math, condicion22);
                 let ic1 = 0;
                 let TotalCantidadD = 0;
                 let TotalCantidadI = 0;
@@ -78,13 +78,16 @@ class NuevoMovimiento extends Component {
                 for (ic1; ic1 < condicion11.length; ic1++)
                     TotalCantidadI = TotalCantidadI + parseInt(condicion11[ic1].Cantidad);
                 for (let i = 0; i < this.state.MovimientosDerecha.length; i++) {
-                    if(NumMovimientoDM===parseInt(this.state.MovimientosDerecha[i].NumMovimiento))
-                        checkD=this.state.MovimientosDerecha[i].Check
+                    if (NumMovimientoDM === parseInt(this.state.MovimientosDerecha[i].NumMovimiento))
+                        checkD = this.state.MovimientosDerecha[i].Check
                 }
                 for (let i = 0; i < this.state.MovimientosIzquierda.length; i++) {
-                    if(NumMovimientoIM===parseInt(this.state.MovimientosIzquierda[i].NumMovimiento))
-                        checkI=this.state.MovimientosIzquierda[i].Check
+                    if (NumMovimientoIM === parseInt(this.state.MovimientosIzquierda[i].NumMovimiento))
+                        checkI = this.state.MovimientosIzquierda[i].Check
                 }
+                let checkDVA = condicion1[0].Check;
+                let checkIVA = condicion11[0].Check;
+
                 if (condicion0.length >= 1) {
                     this.setState({ alert: (<SweetAlert warning confirmBtnText="Regresar" title="No se permite abonar y cargar en un mismo movimiento" onConfirm={this.hideAlert} onCancel={this.hideAlert} />) })
                 } else if ((TotalCantidadD - TotalCantidadI - this.state.Cantidad) === 0) {
@@ -113,9 +116,35 @@ class NuevoMovimiento extends Component {
                         MovimientosIzquierda: MovimientosCop
                         , MovimientosDerecha: MovimientosCopD
                     }, () => this.consumeData(this.state.MovimientosIzquierda, this.state.MovimientosDerecha, 0));
-                } else if ((TotalCantidadD - TotalCantidadI - this.state.Cantidad) < 0 && TotalCantidadD!==0) {
+                } else if ((TotalCantidadD - TotalCantidadI - this.state.Cantidad) < 0 && (TotalCantidadD !== 0 && checkDVA && checkIVA)) {
+                    let MovimientosCop = JSON.parse(JSON.stringify(this.state.MovimientosIzquierda))
+                    ic1 = 0
+                    for (ic1; ic1 < MovimientosCop.length; ic1++) {
+                        if (MovimientosCop[ic1].NumMovimiento === this.state.NumMovimiento) {
+                            MovimientosCop[ic1].Check = false
+                        }
+                    }
+                    let MovimientosCopD = JSON.parse(JSON.stringify(this.state.MovimientosDerecha))
+                    ic1 = 0
+                    for (ic1; ic1 < MovimientosCopD.length; ic1++) {
+                        if (MovimientosCopD[ic1].NumMovimiento === this.state.NumMovimiento) {
+                            MovimientosCopD[ic1].Check = false
+                        }
+                    }
+                    MovimientosCop[this.state.MovimientosIzquierda.length] = {
+                        'id': this.state.MovimientosIzquierda.length
+                        , 'NombreCuenta': this.state.NombreCuenta.Nombre
+                        , 'NumMovimiento': this.state.NumMovimiento
+                        , 'Cantidad': this.state.Cantidad
+                        , 'Check': false
+                    }
+                    this.setState({
+                        MovimientosIzquierda: MovimientosCop
+                        , MovimientosDerecha: MovimientosCopD
+                    }, () => this.consumeData(this.state.MovimientosIzquierda, this.state.MovimientosDerecha, 0));
+                } else if ((TotalCantidadD - TotalCantidadI - this.state.Cantidad) < 0 && TotalCantidadD !== 0) {
                     this.setState({ alert: (<SweetAlert warning confirmBtnText="Regresar" title="Movimiento no valido" onConfirm={this.hideAlert} onCancel={this.hideAlert}>Tip: Revise las cantidades del mismo numero de movimiento</SweetAlert>) })
-                } else if (((NumMovimientoDM < this.state.NumMovimiento && !checkD)|| (NumMovimientoIM < this.state.NumMovimiento && !checkI)) && (this.state.MovimientosIzquierda.length!==0||this.state.MovimientosDerecha.length!==0)) {
+                } else if (((NumMovimientoDM < this.state.NumMovimiento && !checkD) || (NumMovimientoIM < this.state.NumMovimiento && !checkI)) && (this.state.MovimientosIzquierda.length !== 0 || this.state.MovimientosDerecha.length !== 0)) {
                     this.setState({ alert: (<SweetAlert warning confirmBtnText="Regresar" title="Movimiento no valido" onConfirm={this.hideAlert} onCancel={this.hideAlert}>Tip: Aun no acaba el movimiento anterior</SweetAlert>) })
                 } else {
                     let MovimientosCop = JSON.parse(JSON.stringify(this.state.MovimientosIzquierda))
@@ -143,8 +172,8 @@ class NuevoMovimiento extends Component {
                 for (let i = 0; i < this.state.MovimientosIzquierda.length; i++) {
                     condicion22[i] = this.state.MovimientosIzquierda[i].NumMovimiento
                 }
-                let NumMovimientoDM = Math.max.apply(Math, condicion2)===-Infinity? this.state.NumMovimiento : Math.max.apply(Math, condicion2);
-                let NumMovimientoIM = Math.max.apply(Math, condicion22)===-Infinity? this.state.NumMovimiento : Math.max.apply(Math, condicion22);
+                let NumMovimientoDM = Math.max.apply(Math, condicion2) === -Infinity ? this.state.NumMovimiento : Math.max.apply(Math, condicion2);
+                let NumMovimientoIM = Math.max.apply(Math, condicion22) === -Infinity ? this.state.NumMovimiento : Math.max.apply(Math, condicion22);
                 let ic1 = 0;
                 let TotalCantidadD = 0;
                 let TotalCantidadI = 0;
@@ -156,13 +185,15 @@ class NuevoMovimiento extends Component {
                 for (ic1; ic1 < condicion11.length; ic1++)
                     TotalCantidadI = TotalCantidadI + parseInt(condicion11[ic1].Cantidad);
                 for (let i = 0; i < this.state.MovimientosDerecha.length; i++) {
-                    if(NumMovimientoDM===parseInt(this.state.MovimientosDerecha[i].NumMovimiento))
-                        checkD=this.state.MovimientosDerecha[i].Check
+                    if (NumMovimientoDM === parseInt(this.state.MovimientosDerecha[i].NumMovimiento))
+                        checkD = this.state.MovimientosDerecha[i].Check
                 }
                 for (let i = 0; i < this.state.MovimientosIzquierda.length; i++) {
-                    if(NumMovimientoIM===parseInt(this.state.MovimientosIzquierda[i].NumMovimiento))
-                        checkI=this.state.MovimientosIzquierda[i].Check
+                    if (NumMovimientoIM === parseInt(this.state.MovimientosIzquierda[i].NumMovimiento))
+                        checkI = this.state.MovimientosIzquierda[i].Check
                 }
+                let checkDVA = condicion1[0].Check;
+                let checkIVA = condicion11[0].Check;
                 if (condicion0.length >= 1) {
                     this.setState({ alert: (<SweetAlert warning confirmBtnText="Regresar" title="No se permite abonar y cargar en un mismo movimiento" onConfirm={this.hideAlert} onCancel={this.hideAlert} />) })
                 } else if ((TotalCantidadI - TotalCantidadD - this.state.Cantidad) === 0) {
@@ -191,9 +222,35 @@ class NuevoMovimiento extends Component {
                         MovimientosIzquierda: MovimientosCopI
                         , MovimientosDerecha: MovimientosCop
                     }, () => this.consumeData(this.state.MovimientosIzquierda, this.state.MovimientosDerecha, 0));
-                } else if ((TotalCantidadI - TotalCantidadD - this.state.Cantidad) < 0 && TotalCantidadI!==0) {
+                } else if ((TotalCantidadI - TotalCantidadD - this.state.Cantidad) < 0 && (TotalCantidadI !== 0 && checkDVA && checkIVA)) {
+                    let MovimientosCop = JSON.parse(JSON.stringify(this.state.MovimientosDerecha))
+                    ic1 = 0
+                    for (ic1; ic1 < MovimientosCop.length; ic1++) {
+                        if (MovimientosCop[ic1].NumMovimiento === this.state.NumMovimiento) {
+                            MovimientosCop[ic1].Check = false
+                        }
+                    }
+                    let MovimientosCopI = JSON.parse(JSON.stringify(this.state.MovimientosIzquierda))
+                    ic1 = 0
+                    for (ic1; ic1 < MovimientosCopI.length; ic1++) {
+                        if (MovimientosCopI[ic1].NumMovimiento === this.state.NumMovimiento) {
+                            MovimientosCopI[ic1].Check = false
+                        }
+                    }
+                    MovimientosCop[this.state.MovimientosDerecha.length] = {
+                        'id': this.state.MovimientosDerecha.length
+                        , 'NombreCuenta': this.state.NombreCuenta.Nombre
+                        , 'NumMovimiento': this.state.NumMovimiento
+                        , 'Cantidad': this.state.Cantidad
+                        , 'Check': false
+                    }
+                    this.setState({
+                        MovimientosIzquierda: MovimientosCopI
+                        , MovimientosDerecha: MovimientosCop
+                    }, () => this.consumeData(this.state.MovimientosIzquierda, this.state.MovimientosDerecha, 0));
+                } else if ((TotalCantidadI - TotalCantidadD - this.state.Cantidad) < 0 && TotalCantidadI !== 0) {
                     this.setState({ alert: (<SweetAlert warning confirmBtnText="Regresar" title="Movimiento no valido" onConfirm={this.hideAlert} onCancel={this.hideAlert}>Tip: Revise las cantidades del mismo numero de movimiento</SweetAlert>) })
-                } else if (((NumMovimientoDM < this.state.NumMovimiento && !checkD)|| (NumMovimientoIM < this.state.NumMovimiento && !checkI))&& (this.state.MovimientosDerecha.length!==0||this.state.MovimientosIzquierda.length!==0)) {
+                } else if (((NumMovimientoDM < this.state.NumMovimiento && !checkD) || (NumMovimientoIM < this.state.NumMovimiento && !checkI)) && (this.state.MovimientosDerecha.length !== 0 || this.state.MovimientosIzquierda.length !== 0)) {
                     this.setState({ alert: (<SweetAlert warning confirmBtnText="Regresar" title="Movimiento no valido" onConfirm={this.hideAlert} onCancel={this.hideAlert}>Tip: Aun no acaba el movimiento anterior</SweetAlert>) })
                 } else {
                     let MovimientosCop = JSON.parse(JSON.stringify(this.state.MovimientosDerecha))
