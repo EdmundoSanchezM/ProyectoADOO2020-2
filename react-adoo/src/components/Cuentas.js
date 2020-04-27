@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Link } from 'react-router-dom';
+import { Link,Redirect } from 'react-router-dom';
 import Columns from 'react-bulma-components/lib/components/columns';
 import Content from 'react-bulma-components/lib/components/content';
 import Heading from 'react-bulma-components/lib/components/heading';
@@ -18,7 +18,9 @@ class Cuentas extends Component {
             CuentasNExistentes: localStorage.getItem('CuentasNExistentes') ? JSON.parse(localStorage.getItem("CuentasNExistentes")) : [],
             MovimientosIzquierda: localStorage.getItem('MovimientosIzq') ? JSON.parse(localStorage.getItem("MovimientosIzq")) : [],
             MovimientosDerecha: localStorage.getItem('MovimientosDer') ? JSON.parse(localStorage.getItem("MovimientosDer")) : [],   
-            alert:null    
+            alert:null,
+            redirect:false,
+            JSONF:[]
         };
         this.GenerarEstados = this.GenerarEstados.bind(this);
     }
@@ -71,15 +73,29 @@ class Cuentas extends Component {
                     JSONC[i]={id:i,NombreCuenta:CuentasExist[i].NombreCuenta};
                 LongJSONC = JSONC.length
                 for(let i=0;i<CuentasNExist.length;i++){
-                    JSONC[i]={id:i,NombreCuenta:CuentasNExist[i].NombreCuenta};
+                    JSONC[LongJSONC]={id:i,NombreCuenta:CuentasNExist[i].NombreCuenta};
                     LongJSONC=LongJSONC+1;
                 }
                 let JSONF = {"Cuentas":JSONC,"MovimientosIzq":Condicion1,"MovimientosDer":Condicion2,"Metodo":Metodo}
-                console.log(JSONF)
+                this.setState({
+                    JSONF: JSONF
+                }, () => this.consumeData());
             }else
                 this.setState({alert: (<SweetAlert warning title="Hay movimientos que aun no ha terminado" onConfirm={this.hideAlert} onCancel={this.hideAlert}/>)})
     }
+    consumeData() {
+        this.setState({
+            redirect: true
+        });
+    }
     render() {
+        if (this.state.redirect)
+            return (<Redirect push to={{
+                pathname: '/mostrarestados',
+                state: {
+                    JSONF: this.state.JSONF
+                }
+            }} />);
         return (
             <Section>
                 <div className="container has-text-centered">

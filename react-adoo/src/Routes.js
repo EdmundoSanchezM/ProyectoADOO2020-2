@@ -6,6 +6,7 @@ import Cuentas from './components/Cuentas';
 import NuevaCuenta from './components/NuevaCuenta';
 import DetalleCuenta from './components/DetalleCuenta';
 import NuevoMovimiento from './components/NuevoMovimiento';
+import EstadosFinancieros from'./components/EstadosFinancieros';
 
 const Routes = () =>{
     return(
@@ -16,6 +17,7 @@ const Routes = () =>{
             <Route path='/addcuenta' component={NuevaCuenta}/>
             <Route path='/infocuenta' component={DetalleCuenta}/>
             <Route path='/addmovimiento' component={NuevoMovimiento}/>
+            <Route path='/mostrarestados' component={EstadosFinancieros}/>
         </Switch>
     );
 }

@@ -8,7 +8,6 @@ import Box from 'react-bulma-components/lib/components/box';
 import Button from 'react-bulma-components/lib/components/button';
 import Section from 'react-bulma-components/lib/components/section';
 import List from 'react-bulma-components/lib/components/list';
-import { Input } from 'react-bulma-components/lib/components/form';
 import Select from 'react-select';
 import SweetAlert from 'react-bootstrap-sweetalert';
 class NuevaCuenta extends Component {
@@ -19,9 +18,8 @@ class NuevaCuenta extends Component {
             CuentasNExistentes: localStorage.getItem('CuentasNExistentes') ? JSON.parse(localStorage.getItem("CuentasNExistentes")) : [],
             ServerCExist: [],
             selected: '',
-            CuentaNE: '',
             EstadosSelect: [],
-            alert:null
+            alert: null
         };
         this.handleClick = this.handleClick.bind(this);
     }
@@ -31,18 +29,16 @@ class NuevaCuenta extends Component {
     };
 
     handleClick() {
-        let CuentasNExsCop = JSON.parse(JSON.stringify(this.state.CuentasNExistentes))
-        CuentasNExsCop[this.state.CuentasNExistentes.length] = { 'NombreCuenta': this.state.CuentaNE, 'id': this.state.CuentasNExistentes.length }
-        let ArrayTemp = JSON.parse(JSON.stringify(this.state.CuentasExistentes))
-        let SizeCE = this.state.CuentasExistentes.length
+        let ArrayTemp =  JSON.parse(JSON.stringify(this.state.CuentasNExistentes))
+        let SizeCE = this.state.CuentasNExistentes.length
         let i = 0
         let j = 0
         let check = false
         for (i; i < this.state.EstadosSelect.length; i++) {
-            check=false
-            for (j=0; j < this.state.CuentasExistentes.length; j++) {
-                if (this.state.CuentasExistentes[j].NombreCuenta === this.state.EstadosSelect[i].NombreCuenta) {
-                    check=true
+            check = false
+            for (j = 0; j < this.state.CuentasNExistentes.length; j++) {
+                if (this.state.CuentasNExistentes[j].NombreCuenta === this.state.EstadosSelect[i].NombreCuenta) {
+                    check = true
                     this.setState({
                         alert: (
                             <SweetAlert
@@ -59,7 +55,7 @@ class NuevaCuenta extends Component {
                 SizeCE = SizeCE + 1
             }
         }
-        if (this.state.CuentaNE === '' && i === 0) {
+        if (i === 0) {
             this.setState({
                 alert: (
                     <SweetAlert
@@ -70,17 +66,8 @@ class NuevaCuenta extends Component {
                 )
             })
         } else {
-            if (this.state.CuentaNE === '') {
-                this.setState({
-                    CuentasExistentes: ArrayTemp
-                }, () => this.consumeData(this.state.CuentasExistentes, this.state.CuentasNExistentes))
-            } else {
-                this.setState({
-                    CuentasExistentes: ArrayTemp,
-                    CuentasNExistentes: CuentasNExsCop
-                }, () => this.consumeData(this.state.CuentasExistentes, this.state.CuentasNExistentes));
-            }
             this.setState({
+                CuentasNExistentes: ArrayTemp, 
                 alert: (
                     <SweetAlert
                         success
@@ -88,18 +75,17 @@ class NuevaCuenta extends Component {
                         onConfirm={this.hideAlert}
                         onCancel={this.hideAlert} />
                 )
-            })
-        }   
+            }, () => this.consumeData(this.state.CuentasNExistentes));
+        }
     }
     hideAlert = () => {
         this.setState({
             alert: null
         });
     }
-    consumeData(CE, CNE) {
-        localStorage.setItem("CuentasExistentes", JSON.stringify(CE));
-        localStorage.setItem("CuentasNExistentes", JSON.stringify(CNE));
-        this.setState({ EstadosSelect: [], CuentaNE: '' })
+    consumeData(CE) {
+        localStorage.setItem("CuentasNExistentes", JSON.stringify(CE));
+        this.setState({ EstadosSelect: [] })
     }
     componentDidMount() {
         var self = this;
@@ -117,7 +103,6 @@ class NuevaCuenta extends Component {
         });
     }
     render() {
-        const { CuentaNE } = this.state;
         return (<Section>
             <div className="container has-text-centered">
                 <Heading>
@@ -130,7 +115,7 @@ class NuevaCuenta extends Component {
                     <Columns>
                         <Columns.Column size="half">
                             <Heading subtitle size={6}>
-                                Cuentas verificadas
+                                Cuentas iniciales
                             </Heading>
                             <List hoverable>
                                 {
@@ -143,7 +128,7 @@ class NuevaCuenta extends Component {
                         </Columns.Column>
                         <Columns.Column size="half">
                             <Heading subtitle size={6}>
-                                Cuentas inexistentes
+                                Cuentas agregadas
                             </Heading>
                             <List hoverable>
                                 {
@@ -168,11 +153,6 @@ class NuevaCuenta extends Component {
                             value={this.state && this.state.EstadosSelect}
                             onChange={this.handleChange}
                         />
-                        <div>
-                            <br />
-                            <p align="left">Añadir cuenta no registrada</p>
-                            <Input onChange={this.onChange} name="CuentaNE" type="text" placeholder="Escribir cuenta" value={CuentaNE} />
-                        </div>
                         <br />
                         <Button.Group>
                             <Button renderAs="button" color="success" onClick={this.handleClick}>
