@@ -11,5 +11,5 @@ Integrantes:
   - Sánchez Méndez Edmundo Josué
   
 Tecnologias implementadas:
-  - Python (usando Flask)
+  - Python (usando Flask) y ReportLab para generar los PDF's
   - React.js
