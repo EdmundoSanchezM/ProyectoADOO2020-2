@@ -123,8 +123,8 @@ elif(Tipo=='Inventarios Perpetuos'):
         ArregloCuentasValores.append(ArregloCuentasValores[6]-CantidadesOrdenadas[7]+CantidadesOrdenadas[8])
         ArregloCuentas[10]="Perdida del ejercicio"
         ArregloCuentasValores.append(ArregloCuentasValores[6]-CantidadesOrdenadas[7]+CantidadesOrdenadas[8])
-        ArregloCuentas.remove("ISR")
-        ArregloCuentas.remove("PTU")
+        ArregloCuentas.remove("ISR (36%)")
+        ArregloCuentas.remove("PTU (10%)")
 ##########Formato tabla########### 
 banderaCostos=1
 for i in range(0,len(ArregloCuentas)):
@@ -206,7 +206,7 @@ for i in range(0,len(ArregloCuentas)):
                     dataP.append(["mas"," ", " "," "," "])
                     dataP.append(['Otros productos'," ", " ","",str(CantidadesOrdenadas[CuentasOIP.index('Otros productos')])])
     if ArregloCuentas[i]=="Perdida del ejercicio" or ArregloCuentas[i]=="Utilidad del ejercicio":
-        if "ISR" in ArregloCuentas:
+        if "ISR (36%)" in ArregloCuentas:
             dataP.append([ArregloCuentas[i-3]," ", " "," ",str(ArregloCuentasValores[i-3])])
             dataP.append(["menos"," ", " "," "," "])
             dataP.append([ArregloCuentas[i-2]," ", " ",str(ArregloCuentasValores[i-2]),""])

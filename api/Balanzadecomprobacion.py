@@ -10,7 +10,7 @@ OrdenLista=['Caja','Fondo de caja chica','Bancos','Inversiones temporales','Alma
         'Equipo de cómputo electrónico','Equipo de transporte','Equipo de reparto','Depósitos en garantía','Inversiones permanentes','Gastos de investigación y desarrollo','Gastos en etapas preoperativas de organización y administración',
         'Gastos de mercadotecnia','Gastos de organización','Gastos de instalación','Papelería y útiles','Propaganda y publicidad','Primas de seguros','Rentas pagadas por anticipado','Intereses pagados por anticipado',
         'Gastos de administración','Gastos de ventas','Gastos financieros','Depositos en garantia','Proveedores','Documentos por pagar','Acreedores diversos','Anticipo de clientes','Gastos pendientes de pago', 'Gastos por pagar o gastos acumulados',
-        'Impuestos pendientes de pago', 'Impuestos por pagar o impuestos acumulados','Acreedores hipotecarios o hipotecas por pagar','Documentos por pagar a largo plazo','Cuentas por pagar a largo plazo'
+        'Impuestos pendientes de pago', 'Impuestos por pagar o impuestos acumulados','Acreedores hipotecarios o hipotecas por pagar','Documentos por pagar a largo plazo','Cuentas por pagar a largo plazo',
         'Rentas cobradas por anticipado','Intereses cobrados por anticipado','Ventas','Costo de ventas',"Compras","Gasto de Compra","Devoluciones sobre compra","Rebajas sobre compra","Devoluciones sobre venta","Rebajas sobre venta",'Capital social']
 JSONCuentasC = []
 for i in range (0,len(OrdenLista)):
@@ -69,7 +69,7 @@ for i in range (0,len(JSONCuentasC)):
             SCantidadDer=str(MCantidadDer-MCantidadIzq)
     dataP.append([i+1,NombreCuenta, MCantidadIzqA,MCantidadDerA,SCantidadIzq,SCantidadDer])
 dataP.append([" ", "Sumas Iguales:",str(MTotalA),str(MTotalD),str(STotalA),str(STotalD)])
-fileName = 'Balanzadecomprobacion2.pdf'
+fileName = 'Balanzadecomprobacion.pdf'
 
 from reportlab.platypus import SimpleDocTemplate
 from reportlab.lib.pagesizes import A4
