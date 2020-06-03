@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Link,Redirect } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 import Columns from 'react-bulma-components/lib/components/columns';
 import Content from 'react-bulma-components/lib/components/content';
 import Heading from 'react-bulma-components/lib/components/heading';
@@ -9,18 +9,19 @@ import Section from 'react-bulma-components/lib/components/section';
 import axios from 'axios';
 import List from 'react-bulma-components/lib/components/list';
 import SweetAlert from 'react-bootstrap-sweetalert';
+
 class Cuentas extends Component {
     constructor(props) {
         super(props);
-        this.state={
+        this.state = {
             CuentasExistentes: localStorage.getItem('CuentasExistentes') ? JSON.parse(localStorage.getItem("CuentasExistentes")) : [],
             select: localStorage.getItem("select") ? localStorage.getItem("select") : '...',
             CuentasNExistentes: localStorage.getItem('CuentasNExistentes') ? JSON.parse(localStorage.getItem("CuentasNExistentes")) : [],
             MovimientosIzquierda: localStorage.getItem('MovimientosIzq') ? JSON.parse(localStorage.getItem("MovimientosIzq")) : [],
-            MovimientosDerecha: localStorage.getItem('MovimientosDer') ? JSON.parse(localStorage.getItem("MovimientosDer")) : [],   
-            alert:null,
-            redirect:false,
-            JSONF:[]
+            MovimientosDerecha: localStorage.getItem('MovimientosDer') ? JSON.parse(localStorage.getItem("MovimientosDer")) : [],
+            alert: null,
+            redirect: false,
+            JSONF: []
         };
         this.GenerarEstados = this.GenerarEstados.bind(this);
     }
@@ -54,34 +55,35 @@ class Cuentas extends Component {
         });
     }
     GenerarEstados() {
-        let Condicion1= this.state.MovimientosIzquierda;
-        let Condicion2= this.state.MovimientosDerecha;
-        if(Condicion1.length===0&&Condicion2.length===0){
-            this.setState({alert: (<SweetAlert warning title="No tiene movimientos registrados" onConfirm={this.hideAlert} onCancel={this.hideAlert}/>)})
-        }else
-            Condicion1 = this.state.MovimientosIzquierda.filter(item=>item.Check===false);
-            Condicion2 = this.state.MovimientosDerecha.filter(item=>item.Check===false);
-            if(Condicion1.length===0&&Condicion2.length===0){
-                Condicion1= this.state.MovimientosIzquierda;
-                Condicion2= this.state.MovimientosDerecha;
+        let Condicion1 = this.state.MovimientosIzquierda;
+        let Condicion2 = this.state.MovimientosDerecha;
+        if (Condicion1.length === 0 || Condicion2.length === 0) {
+            this.setState({ alert: (<SweetAlert warning title="No tiene movimientos registrados" onConfirm={this.hideAlert} onCancel={this.hideAlert} />) })
+        } else {
+            Condicion1 = this.state.MovimientosIzquierda.filter(item => item.Check === false);
+            Condicion2 = this.state.MovimientosDerecha.filter(item => item.Check === false);
+            if (Condicion1.length === 0 && Condicion2.length === 0) {
+                Condicion1 = this.state.MovimientosIzquierda;
+                Condicion2 = this.state.MovimientosDerecha;
                 let CuentasExist = this.state.CuentasExistentes;
-                let CuentasNExist = this.state.CuentasNExistentes.length===0? []:this.state.CuentasNExistentes;
+                let CuentasNExist = this.state.CuentasNExistentes.length === 0 ? [] : this.state.CuentasNExistentes;
                 let Metodo = this.state.select;
-                let JSONC=[];
-                let LongJSONC=0;
-                for(let i=0;i<CuentasExist.length;i++)
-                    JSONC[i]={id:i,NombreCuenta:CuentasExist[i].NombreCuenta};
+                let JSONC = [];
+                let LongJSONC = 0;
+                for (let i = 0; i < CuentasExist.length; i++)
+                    JSONC[i] = { id: i, NombreCuenta: CuentasExist[i].NombreCuenta };
                 LongJSONC = JSONC.length
-                for(let i=0;i<CuentasNExist.length;i++){
-                    JSONC[LongJSONC]={id:i,NombreCuenta:CuentasNExist[i].NombreCuenta};
-                    LongJSONC=LongJSONC+1;
+                for (let i = 0; i < CuentasNExist.length; i++) {
+                    JSONC[LongJSONC] = { id: i, NombreCuenta: CuentasNExist[i].NombreCuenta };
+                    LongJSONC = LongJSONC + 1;
                 }
-                let JSONF = {"Cuentas":JSONC,"MovimientosIzq":Condicion1,"MovimientosDer":Condicion2,"Metodo":Metodo}
+                let JSONF = { "Cuentas": JSONC, "MovimientosIzq": Condicion1, "MovimientosDer": Condicion2, "Metodo": Metodo }
                 this.setState({
                     JSONF: JSONF
                 }, () => this.consumeData());
-            }else
-                this.setState({alert: (<SweetAlert warning title="Hay movimientos que aun no ha terminado" onConfirm={this.hideAlert} onCancel={this.hideAlert}/>)})
+            } else
+                this.setState({ alert: (<SweetAlert warning title="Hay movimientos que aun no ha terminado" onConfirm={this.hideAlert} onCancel={this.hideAlert} />) })
+        }
     }
     consumeData() {
         this.setState({

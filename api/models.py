@@ -1,4 +1,3 @@
-
 def CuentaM (id):
     Cuentas = dict()
     if(int(id)==0):
@@ -16,9 +15,19 @@ def CuentasExistentes():
         12:'Equipo de cómputo electrónico',13:'Equipo de reparto',14:'Depósitos en garantía',
         15:'Inversiones permanentes',16:'Gastos de investigación y desarrollo',17:'Gastos en etapas preoperativas de organización y administración',
         18:'Gastos de mercadotecnia',19:'Gastos de organización',20:'Gastos de instalación',21:'Papelería y útiles',22:'Propaganda y publicidad',
-        23:'Primas de seguros',24:'Rentas pagadas por anticipado',25:'Intereses pagados por anticipado',26:'Proveedores',27:'Documentos por pagar',
-        28:'Acreedores diversos',29:'Anticipo de clientes',30:'Gastos pendientes de pago, gastos por pagar o gastos acumulados',
-        31:'Impuestos pendientes de pago, impuestos por pagar o impuestos acumulados',32:'Acreedores hipotecarios o hipotecas por pagar',
-        33:'Rentas cobradas por anticipado',34:'Intereses cobrados por anticipado'
+        23:'Primas de seguros',24:'Rentas pagadas por anticipado',25:'Intereses pagados por anticipado',26:'Equipo de transporte',27:'Proveedores',
+        28:'Documentos por pagar',29:'Acreedores diversos',30:'Anticipo de clientes',31:'Gastos pendientes de pago',32:'gastos por pagar o gastos acumulados',
+        33:'Impuestos pendientes de pago',34:'impuestos por pagar o impuestos acumulados',35:'Acreedores hipotecarios o hipotecas por pagar',
+        36:'Documentos por pagar a largo plazo',37:'Cuentas por pagar a largo plazo', 38:'Rentas cobradas por anticipado',39:'Intereses cobrados por anticipado',40:'Capital social',
+        41:'Gasto de venta',42:'Gasto de administración',43:'Gastos financieros',44:'Productos financieros',45:'Otros gastos',46:'Otros productos'
         }
     return ArregloC
+
+def PDFInicio (Cuentas,MovimientosIzq,MovimientosDer,Metodo):
+    print(Cuentas)
+    print("-----------------------------------------------------------")
+    print(MovimientosIzq)
+    print("-----------------------------------------------------------")
+    print(MovimientosDer)
+    print("-----------------------------------------------------------")
+    print(Metodo)
