@@ -81,6 +81,11 @@ class Cuentas extends Component {
                 this.setState({
                     JSONF: JSONF
                 }, () => this.consumeData());
+                axios.post('/GetTodoCuentas', JSONF)
+                    .then(function (response) {
+                    })
+                    .catch(function (error) {
+                    });
             } else
                 this.setState({ alert: (<SweetAlert warning title="Hay movimientos que aun no ha terminado" onConfirm={this.hideAlert} onCancel={this.hideAlert} />) })
         }
@@ -93,6 +98,7 @@ class Cuentas extends Component {
     render() {
         if (this.state.redirect)
             return (<Redirect push to={{
+
                 pathname: '/mostrarestados',
                 state: {
                     JSONF: this.state.JSONF

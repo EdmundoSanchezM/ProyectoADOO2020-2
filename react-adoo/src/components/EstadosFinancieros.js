@@ -19,10 +19,27 @@ class Cuentas extends Component {
         let JSON = this.props.location.state;
         let JSONF = JSON.JSONF;
         console.log(JSONF)
-        axios.post('/GetTodoCuentas', JSONF)
-            .then(function (response) {
+        /* axios.post('/GetTodoCuentas', JSONF)
+             .then(function (response) {
+             })
+             .catch(function (error) {
+             });*/
+        axios('/BalanzadeComprobacionPDF', {
+            method: 'GET',
+            responseType: 'blob' //Force to receive data in a Blob Format
+        })
+            .then(response => {
+                //Create a Blob from the PDF Stream
+                const file = new Blob(
+                    [response.data],
+                    { type: 'application/pdf' });
+                //Build a URL from the file
+                const fileURL = URL.createObjectURL(file);
+                //Open the URL on new Window
+                window.open(fileURL);
             })
-            .catch(function (error) {
+            .catch(error => {
+                console.log(error);
             });
         const script = document.createElement("script");
         script.src = "https://www.riddle.com/files/js/embed.js";
@@ -40,7 +57,7 @@ class Cuentas extends Component {
         this.setState({
             Nombre: "Balanza de comprobación"
         });
-        PDFObject.embed(process.env.PUBLIC_URL + "/PDF/Balanzadecomprobacion.pdf", `#IDCOINTEINER`, options);
+        PDFObject.embed("http://127.0.0.1:5000/BalanzadeComprobacionPDF", `#IDCOINTEINER`, options);
     }
     BalanzaComprobacion = () => {
         this.setState({
@@ -53,7 +70,7 @@ class Cuentas extends Component {
             height: "500px",
             border: "1px solid #cfcfcf"
         };
-        PDFObject.embed(process.env.PUBLIC_URL + "/PDF/Balanzadecomprobacion.pdf", `#IDCOINTEINER`, options);
+        PDFObject.embed("http://127.0.0.1:5000/BalanzadeComprobacionPDF", `#IDCOINTEINER`, options);
     }
     EstadoFinanciero = () => {
         var options = {
@@ -63,7 +80,7 @@ class Cuentas extends Component {
             height: "500px",
             border: "1px solid #cfcfcf"
         };
-        PDFObject.embed(process.env.PUBLIC_URL + "/PDF/EstadoFinanciero.pdf", `#IDCOINTEINER`, options);
+        PDFObject.embed("http://127.0.0.1:5000/EstadoFinancieroPDF", `#IDCOINTEINER`, options);
         this.setState({
             Nombre: "Balance general"
         });
@@ -77,7 +94,7 @@ class Cuentas extends Component {
             height: "500px",
             border: "1px solid #cfcfcf"
         };
-        PDFObject.embed(process.env.PUBLIC_URL + "/PDF/EstadosdeResultados.pdf", `#IDCOINTEINER`, options);
+        PDFObject.embed("http://127.0.0.1:5000/EstadosdeResultadosPDF", `#IDCOINTEINER`, options);
     }
     render() {
         const iframeStyle = {
@@ -97,7 +114,7 @@ class Cuentas extends Component {
                         {this.state.Nombre}
                     </Heading>
                     <Content>
-                        <div style={iframeStyle} id="IDCOINTEINER" />;
+                        <div style={iframeStyle} id="IDCOINTEINER" />
                         <Box>
                             <Button.Group>
                                 <Button renderAs="button" color="success" onClick={this.BalanzaComprobacion}>
