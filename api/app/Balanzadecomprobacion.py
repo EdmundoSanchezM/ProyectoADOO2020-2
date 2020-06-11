@@ -69,11 +69,8 @@ def GenerarBDCPDF(Cuentas,MovimientosIzq,MovimientosDer):
                 SCantidadDer=str(MCantidadDer-MCantidadIzq)
         dataP.append([i+1,NombreCuenta, MCantidadIzqA,MCantidadDerA,SCantidadIzq,SCantidadDer])
     dataP.append([" ", "Sumas Iguales:",str(MTotalA),str(MTotalD),str(STotalA),str(STotalD)])
-    import os
-    outfilename = "Balanzadecomprobacion.pdf"
-    outfiledir = '../react-adoo/public/PDF/'
-    outfilepath = os.path.join( outfiledir, outfilename )
-    fileName = outfilepath
+    
+    fileName = 'Balanzadecomprobacion.pdf'
 
     from reportlab.platypus import SimpleDocTemplate
     from reportlab.lib.pagesizes import A4

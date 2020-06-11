@@ -214,11 +214,8 @@ def GenerarEDORPDF(Cuentas,MovimientosIzq,MovimientosDer,Metodo):
                 dataP.append([ArregloCuentas[i]," ", " "," ",str(ArregloCuentasValores[i])])
             else:
                 dataP.append([ArregloCuentas[i]," ", " "," ",''.join(['(',str(ArregloCuentasValores[i]*-1),')'])])
-    import os
-    outfilename = "EstadosdeResultados.pdf"
-    outfiledir = '../react-adoo/public/PDF/'
-    outfilepath = os.path.join( outfiledir, outfilename )
-    fileName = outfilepath
+    
+    fileName = 'EstadosdeResultados.pdf'
 
     from reportlab.platypus import SimpleDocTemplate
     from reportlab.lib.pagesizes import A4
@@ -259,6 +256,7 @@ def GenerarEDORPDF(Cuentas,MovimientosIzq,MovimientosDer,Metodo):
 
     elems.append(table)
     pdf.build(elems)
+
     Impuestos = 0
     Utilidad = 0
     for i in range(0,len(ArregloCuentas)):

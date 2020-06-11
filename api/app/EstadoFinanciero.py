@@ -261,11 +261,9 @@ def GenerarEDOFPDF(Cuentas,MovimientosIzq,MovimientosDer,Utilidad,Impuestos):
             Bandera = Bandera + 1
             dataP.append([''.join(['    ',NombreCuenta]),SCantidadIzq,' ',' '])
     dataP.append(["Utilidad del ejercicio", UtilidadEjercicio, ' ', ''.join(['$',str(CapitalSocial+UtilidadEjercicio)])])
-    import os
-    outfilename = 'EstadoFinanciero.pdf'
-    outfiledir = '../react-adoo/public/PDF/'
-    outfilepath = os.path.join( outfiledir, outfilename )
-    fileName = outfilepath
+    
+    fileName = 'EstadoFinanciero.pdf'
+    
     from reportlab.platypus import SimpleDocTemplate
     from reportlab.lib.pagesizes import A4
     pdf = SimpleDocTemplate(
