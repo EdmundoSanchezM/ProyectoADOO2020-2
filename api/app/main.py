@@ -1,12 +1,13 @@
-from flask import Flask, jsonify, request,redirect, url_for,send_file,send_from_directory
+from flask import Flask, jsonify, request,redirect, url_for,send_file,render_template
 from .models import CuentaM
 from .models import CuentasExistentes
 from .models import PDFInicio
 from .Balanzadecomprobacion import GenerarBDCPDF
 from .EstadoDeResultados import GenerarEDORPDF
 import json
-app = Flask(__name__,static_folder='../') 
-  
+app = Flask(__name__) 
+app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 0
+
 @app.route("/") 
 def home_view(): 
         return "<h1>ADOMF API</h1>"  
@@ -38,14 +39,19 @@ def Add_cuenta_uso():
     data4 = cuentaausar_data['Metodo']
     GenerarBDCPDF(data,data2,data3)
     GenerarEDORPDF(data,data2,data3,data4)
-    #for i in data['Cuentas']: 
-    #    TodasCuentas.append(i['NombreCuenta'])
-    #print(TodasCuentas)
-    return 'Done', 201#redirect(url_for('.abc', Cuentas=TodasCuentas))
+    return 'Done', 201
 
-@app.route('/CrearPDF')
-def CrearPDF():
-    return 'Even i cant grab this sword'
+@app.route('/BalanzaHTML')
+def BalanzaHTML():
+	return render_template('Balance.html')
+
+@app.route('/EstadoRHTML')
+def EstadoRHTML():
+	return render_template('Balanza.html')
+
+@app.route('/BalanceHTML')
+def BalanceHTML():
+	return render_template('EstadoR.html')
 
 @app.route('/BalanzadeComprobacionPDF')
 def Balanzapdf():
