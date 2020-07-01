@@ -5,12 +5,13 @@ from .models import PDFInicio
 from .Balanzadecomprobacion import GenerarBDCPDF
 from .EstadoDeResultados import GenerarEDORPDF
 import json
-app = Flask(__name__) 
+#main
+app = Flask(__name__)
 app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 0
 
-@app.route("/") 
-def home_view(): 
-        return "<h1>ADOMF API</h1>"  
+@app.route("/")
+def home_view():
+        return "<h1>ADOMF API</h1>"
 
 @app.route('/selectregistromercancia', methods=['POST'])
 def SeleccionarRMercancias():
