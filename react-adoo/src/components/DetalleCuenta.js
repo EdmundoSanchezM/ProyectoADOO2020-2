@@ -4,7 +4,7 @@ import Columns from 'react-bulma-components/lib/components/columns';
 import Content from 'react-bulma-components/lib/components/content';
 import Heading from 'react-bulma-components/lib/components/heading';
 import Button from 'react-bulma-components/lib/components/button';
-import Section from 'react-bulma-components/lib/components/section';
+import Section from 'react-bulma-components/lib/components/section';z
 import List from 'react-bulma-components/lib/components/list';
 import SweetAlert from 'react-bootstrap-sweetalert';
 
