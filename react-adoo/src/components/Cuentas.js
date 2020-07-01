@@ -9,7 +9,7 @@ import Section from 'react-bulma-components/lib/components/section';
 import axios from 'axios';
 import List from 'react-bulma-components/lib/components/list';
 import SweetAlert from 'react-bootstrap-sweetalert';
-
+//Cuentas
 class Cuentas extends Component {
     constructor(props) {
         super(props);
