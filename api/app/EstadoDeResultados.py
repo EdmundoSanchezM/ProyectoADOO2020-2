@@ -62,6 +62,7 @@ def GenerarEDORPDF(Cuentas,MovimientosIzq,MovimientosDer,Metodo):
             ArregloCuentas[5]="Perdida bruta"
         ArregloCuentasValores.append(ArregloCuentasValores[0]-ArregloCuentasValores[4])
         ##############################################################
+        #----------------------------------------------------------------#
         if(ArregloCuentasValores[5]-CantidadesOrdenadas[8]-CantidadesOrdenadas[9]-CantidadesOrdenadas[10]+CantidadesOrdenadas[11]>0):
             ArregloCuentas[6]="Utilidad de operación"
         else:
@@ -125,7 +126,7 @@ def GenerarEDORPDF(Cuentas,MovimientosIzq,MovimientosDer,Metodo):
             ArregloCuentasValores.append(round(ArregloCuentasValores[6]-CantidadesOrdenadas[7]+CantidadesOrdenadas[8],2))
             ArregloCuentas.remove("ISR (36%)")
             ArregloCuentas.remove("PTU (10%)")
-    ##########Formato tabla########### 
+    ##########Formato tabla###########
     banderaCostos=1
     for i in range(0,len(ArregloCuentas)):
         if ArregloCuentas[i]=="Ventas netas":
@@ -214,7 +215,7 @@ def GenerarEDORPDF(Cuentas,MovimientosIzq,MovimientosDer,Metodo):
                 dataP.append([ArregloCuentas[i]," ", " "," ",str(ArregloCuentasValores[i])])
             else:
                 dataP.append([ArregloCuentas[i]," ", " "," ",''.join(['(',str(ArregloCuentasValores[i]*-1),')'])])
-    
+
     fileName = 'EstadosdeResultados.pdf'
 
     from reportlab.platypus import SimpleDocTemplate
