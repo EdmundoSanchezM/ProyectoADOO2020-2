@@ -1,13 +1,13 @@
 import React, { Component } from 'react'
 import { Link } from 'react-router-dom';
 import axios from 'axios';
-import Columns from 'react-bulma-components/lib/components/columns';
-import Content from 'react-bulma-components/lib/components/content';
-import Heading from 'react-bulma-components/lib/components/heading';
-import Box from 'react-bulma-components/lib/components/box';
-import Button from 'react-bulma-components/lib/components/button';
-import Section from 'react-bulma-components/lib/components/section';
-import List from 'react-bulma-components/lib/components/list';
+import {Box} from 'react-bulma-components';
+import {List} from 'react-bulma-components';
+import {Content} from 'react-bulma-components';
+import {Heading} from 'react-bulma-components';
+import {Button} from 'react-bulma-components';
+import {Section} from 'react-bulma-components';
+import {Columns} from 'react-bulma-components';
 import Select from 'react-select';
 import SweetAlert from 'react-bootstrap-sweetalert';
 class NuevaCuenta extends Component {
@@ -179,6 +179,5 @@ class NuevaCuenta extends Component {
         );
     }
 }
-
 
 export default NuevaCuenta;

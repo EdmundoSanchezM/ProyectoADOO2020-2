@@ -1,8 +1,8 @@
 import React from 'react';
-import Section from 'react-bulma-components/lib/components/section';
-import Content from 'react-bulma-components/lib/components/content';
-import Heading from 'react-bulma-components/lib/components/heading';
-import Button from 'react-bulma-components/lib/components/button';
+import {Content} from 'react-bulma-components';
+import {Heading} from 'react-bulma-components';
+import {Button} from 'react-bulma-components';
+import {Section} from 'react-bulma-components';
 import { Link } from 'react-router-dom';
 
 const Home = () => {

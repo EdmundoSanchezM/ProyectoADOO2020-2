@@ -1,11 +1,10 @@
 import React, { Component } from 'react'
 import { Link, Redirect } from 'react-router-dom';
-import Columns from 'react-bulma-components/lib/components/columns';
-import Content from 'react-bulma-components/lib/components/content';
-import Heading from 'react-bulma-components/lib/components/heading';
-import Button from 'react-bulma-components/lib/components/button';
-import Section from 'react-bulma-components/lib/components/section';
-import { Input } from 'react-bulma-components/lib/components/form';
+import {Content} from 'react-bulma-components';
+import {Heading} from 'react-bulma-components';
+import {Button} from 'react-bulma-components';
+import {Section} from 'react-bulma-components';
+import {Columns} from 'react-bulma-components';
 import SweetAlert from 'react-bootstrap-sweetalert';
 
 class NuevoMovimiento extends Component {
@@ -334,12 +333,12 @@ class NuevoMovimiento extends Component {
                                 <div>
                                     <br />
                                     <p align="left">Numero Movimiento:</p>
-                                    <Input onChange={this.onChangenNumeroMov} name="NumMovimiento" pattern="^-?[0-9]\d*\.?\d*$" type="text" placeholder="Numero Movimiento" value={NumMovimiento} />
+                                    <input className="input" onChange={this.onChangenNumeroMov} name="NumMovimiento" pattern="^-?[0-9]\d*\.?\d*$" type="text" placeholder="Numero Movimiento" value={NumMovimiento} ></input>
                                 </div>
                                 <div>
                                     <br />
                                     <p align="left">Cantidad:</p>
-                                    <Input onChange={this.onChangenCantidad} name="Cantidad" type="text" placeholder="Cantidad" value={Cantidad} />
+                                    <input className="input" onChange={this.onChangenCantidad} name="Cantidad" type="text" placeholder="Cantidad" value={Cantidad} ></input>
                                 </div>
                                 <br />
                                 <Button.Group className="has-text-centered">
@@ -374,5 +373,4 @@ class NuevoMovimiento extends Component {
     }
 
 }
-
 export default NuevoMovimiento;

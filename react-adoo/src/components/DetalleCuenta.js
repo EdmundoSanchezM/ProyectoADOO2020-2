@@ -1,11 +1,11 @@
 import React, { Component } from 'react'
 import { Link, Redirect } from 'react-router-dom';
-import Columns from 'react-bulma-components/lib/components/columns';
-import Content from 'react-bulma-components/lib/components/content';
-import Heading from 'react-bulma-components/lib/components/heading';
-import Button from 'react-bulma-components/lib/components/button';
-import Section from 'react-bulma-components/lib/components/section';z
-import List from 'react-bulma-components/lib/components/list';
+import {List} from 'react-bulma-components';
+import {Content} from 'react-bulma-components';
+import {Heading} from 'react-bulma-components';
+import {Button} from 'react-bulma-components';
+import {Section} from 'react-bulma-components';
+import {Columns} from 'react-bulma-components';
 import SweetAlert from 'react-bootstrap-sweetalert';
 
 class DetalleCuenta extends Component {
@@ -304,6 +304,5 @@ class DetalleCuenta extends Component {
     }
 
 }
-
 
 export default DetalleCuenta;

@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import Content from 'react-bulma-components/lib/components/content';
-import Heading from 'react-bulma-components/lib/components/heading';
-import Button from 'react-bulma-components/lib/components/button';
-import Columns from 'react-bulma-components/lib/components/columns';
-import Section from 'react-bulma-components/lib/components/section';
+import {Content} from 'react-bulma-components';
+import {Heading} from 'react-bulma-components';
+import {Button} from 'react-bulma-components';
+import {Section} from 'react-bulma-components';
+import {Columns} from 'react-bulma-components';
 
 export default class RegistroMercancia extends Component {
     componentDidMount(){
