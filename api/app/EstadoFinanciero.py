@@ -93,7 +93,7 @@ def GenerarEDOFPDF(Cuentas,MovimientosIzq,MovimientosDer,Utilidad,Impuestos):
         Temporaldata = dataP[Titulo+1:len(dataP)]
         TAFijo = Titulo+1
         dataP[Titulo+1]= ["  Fijo", ' ', ' ', ' ']
-        dataP[Titulo+2:len(dataP)]= Temporaldata 
+        dataP[Titulo+2:len(dataP)]= Temporaldata
         Bandera = Bandera+1
     #Activo Diferido
     for i in range (ActivoNC+1,ActivoD):
@@ -202,7 +202,7 @@ def GenerarEDOFPDF(Cuentas,MovimientosIzq,MovimientosDer,Utilidad,Impuestos):
         Temporaldata = dataP[Titulo+1:len(dataP)]
         TPFijo = Titulo+1
         dataP[Titulo+1]= ["  Fijo", ' ', ' ', ' ']
-        dataP[Titulo+2:len(dataP)]= Temporaldata 
+        dataP[Titulo+2:len(dataP)]= Temporaldata
     #Pasivo Diferido
     for i in range (PasivoF+1,PasivoD):
         for k in range(0,len(JSONCuentasC)):
@@ -261,9 +261,9 @@ def GenerarEDOFPDF(Cuentas,MovimientosIzq,MovimientosDer,Utilidad,Impuestos):
             Bandera = Bandera + 1
             dataP.append([''.join(['    ',NombreCuenta]),SCantidadIzq,' ',' '])
     dataP.append(["Utilidad del ejercicio", UtilidadEjercicio, ' ', ''.join(['$',str(CapitalSocial+UtilidadEjercicio)])])
-    
+
     fileName = 'EstadoFinanciero.pdf'
-    
+
     from reportlab.platypus import SimpleDocTemplate
     from reportlab.lib.pagesizes import A4
     pdf = SimpleDocTemplate(
@@ -277,7 +277,7 @@ def GenerarEDOFPDF(Cuentas,MovimientosIzq,MovimientosDer,Utilidad,Impuestos):
     # add style
     from reportlab.platypus import TableStyle
     from reportlab.lib import colors
-
+#----------------------------------------------------------------#
     style = TableStyle([
         ('SPAN',(0,0),(-1,0)),
         ('BACKGROUND', (0,0), (3,0), colors.white),
