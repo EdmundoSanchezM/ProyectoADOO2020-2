@@ -89,7 +89,7 @@ class NuevaCuenta extends Component {
     }
     componentDidMount() {
         var self = this;
-        axios.get('/ObtenerCuentasExistentes')
+        axios.get('https://adoom-f-api.herokuapp.com/ObtenerCuentasExistentes')
             .then(function (response) {
                 self.setState({ ServerCExist: response.data });
             })

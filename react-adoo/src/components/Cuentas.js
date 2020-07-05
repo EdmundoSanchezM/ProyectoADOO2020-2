@@ -9,7 +9,7 @@ import {Button} from 'react-bulma-components';
 import {Section} from 'react-bulma-components';
 import {Columns} from 'react-bulma-components';
 import SweetAlert from 'react-bootstrap-sweetalert';
-
+//Cuentas
 class Cuentas extends Component {
     constructor(props) {
         super(props);
@@ -31,7 +31,7 @@ class Cuentas extends Component {
         var self = this;
         if (!localStorage.getItem('CuentasExistentes')) {
             if (ValorCuenta !== -1) {
-                axios.post('/selectregistromercancia', sel)
+                axios.post('https://adoom-f-api.herokuapp.com/selectregistromercancia', sel)
                     .then(function (response) {
                         self.setState({ CuentasExistentes: response.data });
                         localStorage.setItem("CuentasExistentes", JSON.stringify(response.data));
@@ -81,7 +81,7 @@ class Cuentas extends Component {
                 this.setState({
                     JSONF: JSONF
                 }, () => this.consumeData());
-                axios.post('/GetTodoCuentas', JSONF)
+                axios.post('https://adoom-f-api.herokuapp.com/GetTodoCuentas', JSONF)
                     .then(function (response) {
                     })
                     .catch(function (error) {
