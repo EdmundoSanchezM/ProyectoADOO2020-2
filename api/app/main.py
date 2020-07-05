@@ -5,13 +5,16 @@ from .models import PDFInicio
 from .Balanzadecomprobacion import GenerarBDCPDF
 from .EstadoDeResultados import GenerarEDORPDF
 import json
-#main
-app = Flask(__name__)
-app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 0
+from flask_cors import CORS, cross_origin
 
-@app.route("/")
-def home_view():
-        return "<h1>ADOMF API</h1>"
+app = Flask(__name__) 
+cors = CORS(app)
+app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 0
+app.config['CORS_HEADERS'] = 'Content-Type'
+
+@app.route("/") 
+def home_view(): 
+        return "<h1>ADOMF API</h1>"  
 
 @app.route('/selectregistromercancia', methods=['POST'])
 def SeleccionarRMercancias():
@@ -21,7 +24,9 @@ def SeleccionarRMercancias():
     ArregloC = []
     for x in DictioC:
         ArregloC.append({'id':x,'NombreCuenta':DictioC[x]})
-    return jsonify(ArregloC)
+    response = jsonify(ArregloC)
+    response.headers.add("Access-Control-Allow-Origin", "*")
+    return response
 
 @app.route('/ObtenerCuentasExistentes')
 def TodoCuentasAlmacenada():
@@ -29,7 +34,9 @@ def TodoCuentasAlmacenada():
     ArregloC=[]
     for x in ObtenerC:
         ArregloC.append({'id':x,'NombreCuenta':ObtenerC[x]})
-    return jsonify(ArregloC)
+    response = jsonify(ArregloC)
+    response.headers.add("Access-Control-Allow-Origin", "*")
+    return response
 
 @app.route('/GetTodoCuentas', methods=['POST'])
 def Add_cuenta_uso():
@@ -44,15 +51,15 @@ def Add_cuenta_uso():
 
 @app.route('/BalanzaHTML')
 def BalanzaHTML():
-	return render_template('Balance.html')
+	return render_template('Balanza.html')
 
 @app.route('/EstadoRHTML')
 def EstadoRHTML():
-	return render_template('Balanza.html')
+	return render_template('EstadoR.html')
 
 @app.route('/BalanceHTML')
 def BalanceHTML():
-	return render_template('EstadoR.html')
+	return render_template('Balance.html')
 
 @app.route('/BalanzadeComprobacionPDF')
 def Balanzapdf():

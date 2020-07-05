@@ -46,13 +46,13 @@ def GenerarBDCPDF(Cuentas,MovimientosIzq,MovimientosDer):
         if(MCantidadIzq!=0):
             if  auxMI==1:
                 auxMI = 0
-                MCantidadIzqA=''.join(['$',str(MCantidadIzq)])
+                MCantidadIzqA=''.join(['$',str(MCantidadIzq)]) 
             else:
                 MCantidadIzqA=str(MCantidadIzq)
         if(MCantidadDer!=0):
             if auxMD==1:
                 auxMD=0
-                MCantidadDerA=''.join(['$',str(MCantidadDer)])
+                MCantidadDerA=''.join(['$',str(MCantidadDer)]) 
             else:
                 MCantidadDerA=str(MCantidadDer)
         if(MCantidadIzq>MCantidadDer):
@@ -64,12 +64,12 @@ def GenerarBDCPDF(Cuentas,MovimientosIzq,MovimientosDer):
         if( MCantidadIzq<MCantidadDer):
             if auxSD==1:
                 auxSD=0
-                SCantidadDer=''.join(['$',str(MCantidadDer-MCantidadIzq)])
+                SCantidadDer=''.join(['$',str(MCantidadDer-MCantidadIzq)])  
             else:
                 SCantidadDer=str(MCantidadDer-MCantidadIzq)
         dataP.append([i+1,NombreCuenta, MCantidadIzqA,MCantidadDerA,SCantidadIzq,SCantidadDer])
     dataP.append([" ", "Sumas Iguales:",str(MTotalA),str(MTotalD),str(STotalA),str(STotalD)])
-
+    
     fileName = 'Balanzadecomprobacion.pdf'
 
     from reportlab.platypus import SimpleDocTemplate
@@ -85,7 +85,7 @@ def GenerarBDCPDF(Cuentas,MovimientosIzq,MovimientosDer):
     # add style
     from reportlab.platypus import TableStyle
     from reportlab.lib import colors
-#----------------------------------------------------------------#
+
     style = TableStyle([
         ('SPAN',(0,0),(-1,0)),
         ('BACKGROUND', (0,0), (3,0), colors.white),
